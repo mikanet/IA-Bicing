@@ -12,6 +12,7 @@ public class Furgonetas {
 
 	public void init(int f) {
 		// TODO
+		// falta inicializar
 	}
 
 	public void print() {

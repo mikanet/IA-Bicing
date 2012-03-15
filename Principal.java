@@ -16,7 +16,7 @@ public class Principal {
 	public static void main(String[] args) {
 
 		// Read data from user
-		System.out.println("[IA-2012, Bicing  -  Insert > Estaciones, bicicletas, furgonetas, demanda, seed)]");
+		System.out.println("[ IA-2012, Bicing  -  (Estaciones, bicicletas, furgonetas, demanda, seed) ]");
 		System.out.print("> ");
 
 		try {

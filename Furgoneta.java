@@ -15,6 +15,9 @@ public class Furgoneta {
 
 		parada_uno = -1;
 		parada_dos = -1;
+		bc_salida = 0;
+		bc_p_uno = 0;
+		bc_p_dos = 0;
 
 	}
 
