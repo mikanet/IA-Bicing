@@ -19,7 +19,7 @@ public class Principal {
 		System.out.println("[ IA-2012, Bicing  -  (Estaciones, bicicletas, furgonetas, demanda, seed) ]");
 		System.out.print("> ");
 
-		// Modificar classe input
+		// Modificar classe input!!!
 
 		try {
 			ESTACIONES = Input.readInt();
