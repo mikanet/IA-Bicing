@@ -1,6 +1,6 @@
 package bicing;
 
-public class Furgoneta {
+public class Transporte {
 
 	int origen; // estacion origen
 	int bc_salida; // int bicicletas de salida
@@ -11,18 +11,21 @@ public class Furgoneta {
 	int parada_dos; // destino 2
 	int bc_p_dos; // bicicletas destino 2
 
-	public Furgoneta() {
+	public Transporte() {
+
+		origen = -1;
+		bc_salida = -1;
 
 		parada_uno = -1;
 		parada_dos = -1;
-		bc_salida = 0;
-		bc_p_uno = 0;
-		bc_p_dos = 0;
+
+		bc_p_uno = -1;
+		bc_p_dos = -1;
 
 	}
 
 	public void print(int i) {
-		System.out.print("Furgoneta " + i + ", estacion origen: " + this.origen);
+		System.out.print("Transporte " + i + ", estacion origen: " + this.origen);
 		System.out.print(" - bc salida: " + this.bc_salida);
 
 		System.out.print(" - parada1: " + this.parada_uno);
