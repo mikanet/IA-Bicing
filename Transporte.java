@@ -24,6 +24,54 @@ public class Transporte {
 
 	}
 
+	public int getOrigen() {
+		return origen;
+	}
+
+	public void setOrigen(int origen) {
+		this.origen = origen;
+	}
+
+	public int getBc_salida() {
+		return bc_salida;
+	}
+
+	public void setBc_salida(int bc_salida) {
+		this.bc_salida = bc_salida;
+	}
+
+	public int getParada_uno() {
+		return parada_uno;
+	}
+
+	public void setParada_uno(int parada_uno) {
+		this.parada_uno = parada_uno;
+	}
+
+	public int getBc_p_uno() {
+		return bc_p_uno;
+	}
+
+	public void setBc_p_uno(int bc_p_uno) {
+		this.bc_p_uno = bc_p_uno;
+	}
+
+	public int getParada_dos() {
+		return parada_dos;
+	}
+
+	public void setParada_dos(int parada_dos) {
+		this.parada_dos = parada_dos;
+	}
+
+	public int getBc_p_dos() {
+		return bc_p_dos;
+	}
+
+	public void setBc_p_dos(int bc_p_dos) {
+		this.bc_p_dos = bc_p_dos;
+	}
+
 	public void print(int i) {
 		System.out.print("Transporte " + i + ", estacion origen: " + this.origen);
 		System.out.print(" - bc salida: " + this.bc_salida);

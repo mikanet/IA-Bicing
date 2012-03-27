@@ -1,7 +1,6 @@
 package bicing;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
@@ -41,7 +40,7 @@ public class Principal {
 		readDataFromUser();
 
 		// State initialization
-		Ciudad ciudad = new Ciudad(ESTACIONES, BICICLETAS, FURGONETAS, DEMANDA, SEED);
+		Ciudad ciudad = new Ciudad(ESTACIONES, BICICLETAS, FURGONETAS, DEMANDA, SEED, random);
 
 		// Initialization mode
 		if (initMode == 1) {
@@ -77,7 +76,6 @@ public class Principal {
 			Search search = new HillClimbingSearch();
 			SearchAgent agent = new SearchAgent(problem, search);
 
-			printActions(agent.getActions());
 			// System.out.println(search.getGoalState());
 			printInstrumentation(agent.getInstrumentation());
 
@@ -98,7 +96,6 @@ public class Principal {
 			Search search = new SimulatedAnnealingSearch(SAIterations, SAIterationsPerStep, SAK, SALambda);
 			SearchAgent agent = new SearchAgent(problem, search);
 
-			printActions(agent.getActions());
 			// System.out.println(search.getGoalState());
 			printInstrumentation(agent.getInstrumentation());
 
@@ -113,13 +110,6 @@ public class Principal {
 			String key = (String) keys.next();
 			String property = properties.getProperty(key);
 			System.out.println(key + " : " + property);
-		}
-	}
-
-	private static void printActions(List<?> actions) {
-		for (int i = 0; i < actions.size(); i++) {
-			String action = (String) actions.get(i);
-			System.out.println(action);
 		}
 	}
 
