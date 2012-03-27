@@ -10,11 +10,6 @@ public class Furgonetas {
 		furgonetas = new Vector<Furgoneta>();
 	}
 
-	public void init(int f) {
-		// TODO
-		// falta inicializar
-	}
-
 	public void print() {
 		System.out.println("Numero de furgonetas: " + this.furgonetas.size());
 		for (int i = 0; i < furgonetas.size(); i++) {

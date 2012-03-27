@@ -1,6 +1,15 @@
 package bicing;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
 import java.util.Random;
+
+import aima.search.framework.Problem;
+import aima.search.framework.Search;
+import aima.search.framework.SearchAgent;
+import aima.search.informed.HillClimbingSearch;
+import aima.search.informed.SimulatedAnnealingSearch;
 
 public class Principal {
 
@@ -10,8 +19,14 @@ public class Principal {
 	public static int FURGONETAS;
 	public static int DEMANDA;
 	public static int SEED;
+	public static int initMode = 0;
 	public static int saHc = 0;
 	public static int heur = 0;
+
+	public static int SAIterations = 0;
+	public static int SAIterationsPerStep = 0;
+	public static int SAK = 0;
+	public static int SALambda = 0;
 
 	public static final Random random = new Random();
 
@@ -20,18 +35,95 @@ public class Principal {
 		// Read data from user
 		readDataFromUser();
 
-		// Initialize data
+		// State initialization
 		Ciudad ciudad = new Ciudad();
 		ciudad.init(ESTACIONES, BICICLETAS, FURGONETAS, DEMANDA, SEED);
 
-		// Call HC or SA, heur1, heur2
-		if (saHc == 1) {
-			// Simulated annealing
+		// Initialization mode
+		if (initMode == 1) {
+			ciudad.initEstrategiaSimple();
 		} else {
-			// Hill climbing
+			ciudad.initEstrategiaElaborada();
 		}
 
+		// AIMA search
+		if (saHc == 1) {
+			simulatedAnnealingSearch(ciudad, heur, SAIterations, SAIterationsPerStep, SAK, SALambda);
+		} else {
+			hillClimbingSearch(ciudad, heur);
+		}
+		
+		// heuristic 1: Maximizar acercarse a la demanda
+		// heuristic 2: Maximizar beneficios (min transportes, acercarse a la demanda)
+
+		System.out.println("[ END ]");
 		System.exit(0);
+	}
+
+	private static void hillClimbingSearch(Ciudad ciudad, int heur) {
+		try {
+
+			Problem problem = null;
+			if (heur == 1) {
+				// @formatter:off
+				//problem = new Problem(ciudad, new BicingSuccessorFunctionHC(), new BicingGoalTest(), new BicingHeuristicFunction_XXXX());
+				// @formatter:on
+			} else if (heur == 2) {
+				// @formatter:off
+				//problem = new Problem(ciudad, new BicingSuccessorFunctionHC(), new BicingGoalTest(), new BicingHeuristicFunction_XXXX());
+				// @formatter:on
+			}
+			Search search = new HillClimbingSearch();
+			SearchAgent agent = new SearchAgent(problem, search);
+
+			printActions(agent.getActions());
+			// System.out.println(search.getGoalState());
+			printInstrumentation(agent.getInstrumentation());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void simulatedAnnealingSearch(Ciudad ciudad, int heur, int sAIterations2, int sAIterationsPerStep2, int sAK2, int sALambda2) {
+		try {
+
+			Problem problem = null;
+			if (heur == 1) {
+				// @formatter:off
+				//problem = new Problem(ciudad, new BicingSuccessorFunctionSA(), new BicingGoalTest(), new BicingHeuristicFunction_XXXX());
+				// @formatter:on
+			} else if (heur == 2) {
+				// @formatter:off
+				//problem = new Problem(ciudad, new BicingSuccessorFunctionSA(), new BicingGoalTest(), new BicingHeuristicFunction_XXXX());
+				// @formatter:on
+			}
+			Search search = new SimulatedAnnealingSearch(SAIterations, SAIterationsPerStep, SAK, SALambda);
+			SearchAgent agent = new SearchAgent(problem, search);
+
+			printActions(agent.getActions());
+			// System.out.println(search.getGoalState());
+			printInstrumentation(agent.getInstrumentation());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void printInstrumentation(Properties properties) {
+		Iterator<Object> keys = properties.keySet().iterator();
+		while (keys.hasNext()) {
+			String key = (String) keys.next();
+			String property = properties.getProperty(key);
+			System.out.println(key + " : " + property);
+		}
+	}
+
+	private static void printActions(List<?> actions) {
+		for (int i = 0; i < actions.size(); i++) {
+			String action = (String) actions.get(i);
+			System.out.println(action);
+		}
 	}
 
 	public static void readDataFromUser() {
@@ -50,10 +142,23 @@ public class Principal {
 			FURGONETAS = Input.readInt();
 			System.out.print("Demanda equilibrada(1), hora punta(2): ");
 			DEMANDA = Input.readInt();
+			System.out.print("Estrategia simple(1), elaborada(2): ");
+			initMode = Input.readInt();
 			System.out.print("SA(1), HC(2): ");
 			saHc = Input.readInt();
 			System.out.print("Heur(1), Heur(2): ");
 			heur = Input.readInt();
+
+			if (saHc == 1) {
+				System.out.print("SA Iteraciones: ");
+				SAIterations = Input.readInt();
+				System.out.print("SA Iteraciones por paso: ");
+				SAIterationsPerStep = Input.readInt();
+				System.out.print("SA k: ");
+				SAK = Input.readInt();
+				System.out.print("SA lambda: ");
+				SALambda = Input.readInt();
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();

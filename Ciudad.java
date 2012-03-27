@@ -16,7 +16,16 @@ public class Ciudad {
 		this.estaciones = new Bicing(est, bc, demanda, seed);
 		// init furgonetas, numero de forgunetas
 		this.furgonetas = new Furgonetas();
-		furgonetas.init(f);
+	}
+
+	public void initEstrategiaSimple() {
+		// Estrategia simple para crear estado inicial
+
+	}
+
+	public void initEstrategiaElaborada() {
+		// Estrategia elaborada para crear estado inicial
+
 	}
 
 	public void print() {
