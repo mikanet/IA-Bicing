@@ -1,7 +1,5 @@
 package bicing;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.Random;
 
 public class Principal {
@@ -18,20 +16,33 @@ public class Principal {
 	public static void main(String[] args) {
 
 		// Read data from user
+		readDataFromUser();
+
+		// Initialize data
+		Ciudad ciudad = new Ciudad();
+		ciudad.init(ESTACIONES, BICICLETAS, FURGONETAS, DEMANDA, SEED);
+
+		ciudad.print();
+
+		System.exit(0);
+	}
+
+	public static void readDataFromUser() {
+		// Read data from user
 		System.out.println("[ IA-2012, Bicing ]");
 
 		try {
 
 			System.out.print("Estaciones: ");
-			ESTACIONES = readInt();
+			ESTACIONES = Input.readInt();
 			System.out.print("Bicicletas: ");
-			BICICLETAS = readInt();
+			BICICLETAS = Input.readInt();
 			System.out.print("Furgonetas: ");
-			FURGONETAS = readInt();
+			FURGONETAS = Input.readInt();
 			System.out.print("Demanda (1.equilibrada, 2.hora punta): ");
-			DEMANDA = readInt();
+			DEMANDA = Input.readInt();
 			System.out.print("Seed: ");
-			SEED = readInt();
+			SEED = Input.readInt();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -39,41 +50,6 @@ public class Principal {
 
 		// Set random seed
 		random.setSeed(SEED);
-
-		// init data
-		Ciudad ciudad = new Ciudad();
-		ciudad.init(ESTACIONES, BICICLETAS, FURGONETAS, DEMANDA, SEED);
-
-		ciudad.print();
-
-		// System.out.println("Estaciones: " + ESTACIONES + " Biciletas: " +
-		// BICICLETAS + " Furgonetas: " + FURGONETAS + " Demanda: " + DEMANDA +
-		// " Seed: " + SEED);
-
-		// end
-		System.out.println("-");
-		System.exit(0);
-
-	}
-
-	public static int readInt() {
-		BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-		try {
-			return Integer.parseInt(stdin.readLine());
-		} catch (java.io.IOException e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
-	public static double readDouble() {
-		BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
-		try {
-			return Double.parseDouble((stdin.readLine()));
-		} catch (java.io.IOException e) {
-			e.printStackTrace();
-		}
-		return 0;
 	}
 
 }
