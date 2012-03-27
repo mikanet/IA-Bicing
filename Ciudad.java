@@ -1,21 +1,19 @@
 package bicing;
 
+import java.util.Vector;
+
 import IA.Bicing.Bicing;
 
 public class Ciudad {
 
 	Bicing estaciones;
-	Furgonetas furgonetas;
+	Vector<Transporte> transportes;
 
-	public Ciudad() {
-
-	}
-
-	public void init(int est, int bc, int f, int demanda, int seed) {
+	public Ciudad(int est, int bc, int f, int demanda, int seed) {
 		// init estaciones
 		this.estaciones = new Bicing(est, bc, demanda, seed);
-		// init furgonetas, numero de forgunetas
-		this.furgonetas = new Furgonetas();
+		// init transportes
+		this.transportes = new Vector<Transporte>();
 	}
 
 	public void initEstrategiaSimple() {
@@ -39,8 +37,6 @@ public class Ciudad {
 			System.out.print(" - prev_after_user_moves: " + estaciones.getStationNextState(i));
 			System.out.println();
 		}
-		// print furgonetas
-		furgonetas.print();
 	}
 
 }

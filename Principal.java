@@ -10,6 +10,11 @@ import aima.search.framework.Search;
 import aima.search.framework.SearchAgent;
 import aima.search.informed.HillClimbingSearch;
 import aima.search.informed.SimulatedAnnealingSearch;
+import bicing.aima.BicingGoalTest;
+import bicing.aima.BicingSuccessorFunctionHC;
+import bicing.aima.BicingSuccessorFunctionSA;
+import bicing.aima.Bicing_HF_maxBeneficios;
+import bicing.aima.Bicing_HF_maxDistribucion;
 
 public class Principal {
 
@@ -36,8 +41,7 @@ public class Principal {
 		readDataFromUser();
 
 		// State initialization
-		Ciudad ciudad = new Ciudad();
-		ciudad.init(ESTACIONES, BICICLETAS, FURGONETAS, DEMANDA, SEED);
+		Ciudad ciudad = new Ciudad(ESTACIONES, BICICLETAS, FURGONETAS, DEMANDA, SEED);
 
 		// Initialization mode
 		if (initMode == 1) {
@@ -52,9 +56,10 @@ public class Principal {
 		} else {
 			hillClimbingSearch(ciudad, heur);
 		}
-		
+
 		// heuristic 1: Maximizar acercarse a la demanda
-		// heuristic 2: Maximizar beneficios (min transportes, acercarse a la demanda)
+		// heuristic 2: Maximizar beneficios (min transportes, acercarse a la
+		// demanda)
 
 		System.out.println("[ END ]");
 		System.exit(0);
@@ -65,13 +70,9 @@ public class Principal {
 
 			Problem problem = null;
 			if (heur == 1) {
-				// @formatter:off
-				//problem = new Problem(ciudad, new BicingSuccessorFunctionHC(), new BicingGoalTest(), new BicingHeuristicFunction_XXXX());
-				// @formatter:on
+				problem = new Problem(ciudad, new BicingSuccessorFunctionHC(), new BicingGoalTest(), new Bicing_HF_maxDistribucion());
 			} else if (heur == 2) {
-				// @formatter:off
-				//problem = new Problem(ciudad, new BicingSuccessorFunctionHC(), new BicingGoalTest(), new BicingHeuristicFunction_XXXX());
-				// @formatter:on
+				problem = new Problem(ciudad, new BicingSuccessorFunctionHC(), new BicingGoalTest(), new Bicing_HF_maxBeneficios());
 			}
 			Search search = new HillClimbingSearch();
 			SearchAgent agent = new SearchAgent(problem, search);
@@ -90,13 +91,9 @@ public class Principal {
 
 			Problem problem = null;
 			if (heur == 1) {
-				// @formatter:off
-				//problem = new Problem(ciudad, new BicingSuccessorFunctionSA(), new BicingGoalTest(), new BicingHeuristicFunction_XXXX());
-				// @formatter:on
+				problem = new Problem(ciudad, new BicingSuccessorFunctionSA(), new BicingGoalTest(), new Bicing_HF_maxDistribucion());
 			} else if (heur == 2) {
-				// @formatter:off
-				//problem = new Problem(ciudad, new BicingSuccessorFunctionSA(), new BicingGoalTest(), new BicingHeuristicFunction_XXXX());
-				// @formatter:on
+				problem = new Problem(ciudad, new BicingSuccessorFunctionSA(), new BicingGoalTest(), new Bicing_HF_maxBeneficios());
 			}
 			Search search = new SimulatedAnnealingSearch(SAIterations, SAIterationsPerStep, SAK, SALambda);
 			SearchAgent agent = new SearchAgent(problem, search);
@@ -146,7 +143,7 @@ public class Principal {
 			initMode = Input.readInt();
 			System.out.print("SA(1), HC(2): ");
 			saHc = Input.readInt();
-			System.out.print("Heur(1), Heur(2): ");
+			System.out.print("Heur Max Distribucion(1), Max Beneficios(2): ");
 			heur = Input.readInt();
 
 			if (saHc == 1) {
