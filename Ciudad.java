@@ -7,26 +7,45 @@ import IA.Bicing.Bicing;
 
 public class Ciudad {
 
-	Bicing estaciones;
-	Vector<Transporte> transportes;
-	Vector<Boolean> estacionesOcupadas;
-	Integer numFurgonetas;
-	Random random;
+	public static Bicing estaciones;
+	public static Integer numFurgonetas;
+	public static Random random;
 
-	public Ciudad(int est, int bc, int f, int demanda, int seed, Random random) {
+	public Vector<Transporte> transportes;
+	public Vector<Boolean> estacionesOcupadas;
+
+	public Ciudad(int est, int bc, int f, int demanda, int seed, Random pRandom) {
 		// init estaciones
-		this.estaciones = new Bicing(est, bc, demanda, seed);
+		estaciones = new Bicing(est, bc, demanda, seed);
 		// init transportes
 		this.transportes = new Vector<Transporte>();
 		// vars
 		this.estacionesOcupadas = new Vector<Boolean>();
-		this.numFurgonetas = f;
-		this.random = random;
+		numFurgonetas = f;
+		random = pRandom;
 
 		// Marcamos las estaciones como libres
-		for (int i = 0; i < this.estacionesOcupadas.size(); i++) {
-			this.estacionesOcupadas.set(i, false);
+		for (int i = 0; i < estaciones.getNumStations(); i++) {
+			this.estacionesOcupadas.add(false);
 		}
+	}
+
+	// Copia
+	public Ciudad(Ciudad ciudadOriginal) {
+		// Copiamos las variables no estaticas
+		transportes = new Vector<Transporte>();
+		estacionesOcupadas = new Vector<Boolean>();
+
+		// Copiamos los transportes
+		for (int i = 0; i < ciudadOriginal.transportes.size(); i++) {
+			transportes.add(ciudadOriginal.transportes.get(i));
+		}
+
+		// Copiamos las estaciones ocupadas
+		for (int i = 0; i < ciudadOriginal.estacionesOcupadas.size(); i++) {
+			estacionesOcupadas.add(ciudadOriginal.estacionesOcupadas.get(i));
+		}
+
 	}
 
 	public void initEstrategiaSimple() {
@@ -41,6 +60,8 @@ public class Ciudad {
 		Transporte transAux;
 
 		for (int i = 0; i < numFurgonetas; i++) {
+			// FIXME si en ninguna estacion sobran o do not move no es 0 bucle
+			// infinito :(
 			st = (random.nextInt(numEstaciones));
 			// No enviamos furgonetas a estaciones donde no sobraran o no se
 			// pueden llevar ninguna
@@ -143,6 +164,10 @@ public class Ciudad {
 		return gastos;
 	}
 
+	public static Integer getNumFurgonetas() {
+		return numFurgonetas;
+	}
+
 	public int getTransporteConEstacion(int st) {
 		// Devuelve el identificador del transporte (indice en el vector
 		// transportes) del transporte con furgoneta en la estacion origen st
@@ -210,12 +235,12 @@ public class Ciudad {
 		System.out.println("Numero de transportes: " + transportes.size());
 		for (int i = 0; i < transportes.size(); i++) {
 			System.out.print("Transporte " + i);
-			System.out.print(" - origen: " + transportes.get(i).getOrigen());
-			System.out.print(" - bc_origen: " + transportes.get(i).getBcOrigen());
-			System.out.print(" - parada  uno: " + transportes.get(i).getParadaUno());
-			System.out.print(" - bc_uno: " + transportes.get(i).getBcParadaUno());
-			System.out.print(" - parada  dos: " + transportes.get(i).getParadaDos());
-			System.out.print(" - bc_dos: " + transportes.get(i).getBcParadaDos());
+			System.out.print(", STorigen: " + transportes.get(i).getOrigen());
+			System.out.print(", BCorigen: " + transportes.get(i).getBcOrigen());
+			System.out.print(", STuno: " + transportes.get(i).getParadaUno());
+			System.out.print(", BCuno: " + transportes.get(i).getBcParadaUno());
+			System.out.print(", STdos: " + transportes.get(i).getParadaDos());
+			System.out.print(", BCdos: " + transportes.get(i).getBcParadaDos());
 			System.out.println();
 		}
 

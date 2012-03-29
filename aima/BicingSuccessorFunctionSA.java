@@ -12,7 +12,7 @@ public class BicingSuccessorFunctionSA implements SuccessorFunction {
 	@SuppressWarnings("unused")
 	public List<Successor> getSuccessors(Object aState) {
 		Vector<Successor> result = new Vector<Successor>();
-		Ciudad estadoCiudad = (Ciudad) aState;
+		Ciudad estCiudad = (Ciudad) aState;
 
 		return null;
 	}
