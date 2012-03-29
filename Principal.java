@@ -39,8 +39,12 @@ public class Principal {
 		// Read data from user
 		readDataFromUser();
 
+		System.out.println("[ Inicializando... ]");
+
 		// State initialization
 		Ciudad ciudad = new Ciudad(ESTACIONES, BICICLETAS, FURGONETAS, DEMANDA, SEED, random);
+
+		System.out.println("[ Preparacion estado inicial... ]");
 
 		// Initialization mode
 		if (initMode == 1) {
@@ -49,16 +53,18 @@ public class Principal {
 			ciudad.initEstrategiaElaborada();
 		}
 
+		System.out.println("[ Inicializacion y estado finalizado ]");
+
 		// AIMA search
 		if (saHc == 1) {
-			simulatedAnnealingSearch(ciudad, heur, SAIterations, SAIterationsPerStep, SAK, SALambda);
+			// simulatedAnnealingSearch(ciudad, heur, SAIterations,
+			// SAIterationsPerStep, SAK, SALambda);
 		} else {
-			hillClimbingSearch(ciudad, heur);
+			// hillClimbingSearch(ciudad, heur);
 		}
 
-		// heuristic 1: Maximizar acercarse a la demanda
-		// heuristic 2: Maximizar beneficios (min transportes, acercarse a la
-		// demanda)
+		// ciudad.printTransportes();
+		// ciudad.printEstaciones();
 
 		System.out.println("[ END ]");
 		System.exit(0);

@@ -37,7 +37,7 @@ public class Ciudad {
 			st = (random.nextInt(numEstaciones));
 			// No enviamos furgonetas a estaciones donde no sobraran o no se
 			// pueden llevar ninguna
-			while (estacionOcupada.contains(st) || ((estaciones.getStationNextState(st) <= estaciones.getDemandNextHour(st)) || (estaciones.getStationDoNotMove(st) == 0))) {
+			while (estacionOcupada.contains(st) || ((estaciones.getStationNextState(st) <= estaciones.getDemandNextHour(st)) || (estaciones.getStationDoNotMove(st) <= 0))) {
 				st = (random.nextInt(numEstaciones));
 			}
 			estacionOcupada.add(st);
@@ -52,11 +52,11 @@ public class Ciudad {
 			if (aux > 30) {
 				transAux.bc_salida = 30;
 			} else {
-				transAux.bc_salida = aux;
+				transAux.bc_salida = aux + 1;
 			}
 
 			// Decidimos numero de paradas
-			if (random.nextInt(1) == 0) {
+			if (random.nextInt(2) == 0) {
 				// una parada
 				aux = random.nextInt(numEstaciones);
 				while (aux == transAux.getOrigen()) {
@@ -109,7 +109,7 @@ public class Ciudad {
 		return 0;
 	}
 
-	public void print() {
+	public void printEstaciones() {
 		// print estaciones
 		System.out.println("Numero de estaciones: " + estaciones.getNumStations());
 		for (int i = 0; i < estaciones.getNumStations(); i++) {
@@ -120,6 +120,21 @@ public class Ciudad {
 			System.out.print(" - prev_after_user_moves: " + estaciones.getStationNextState(i));
 			System.out.println();
 		}
+	}
+
+	public void printTransportes() {
+		System.out.println("Numero de transportes: " + transportes.size());
+		for (int i = 0; i < transportes.size(); i++) {
+			System.out.print("Transporte " + i);
+			System.out.print(" - origen: " + transportes.get(i).getOrigen());
+			System.out.print(" - bc_origen: " + transportes.get(i).getBc_salida());
+			System.out.print(" - parada  uno: " + transportes.get(i).getParada_uno());
+			System.out.print(" - bc_uno: " + transportes.get(i).getBc_p_uno());
+			System.out.print(" - parada  dos: " + transportes.get(i).getParada_dos());
+			System.out.print(" - bc_dos: " + transportes.get(i).getBc_p_dos());
+			System.out.println();
+		}
+
 	}
 
 }
