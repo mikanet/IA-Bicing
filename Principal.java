@@ -70,6 +70,7 @@ public class Principal {
 		System.exit(0);
 	}
 
+	@SuppressWarnings("unused")
 	private static void hillClimbingSearch(Ciudad ciudad, int heur) {
 		try {
 
@@ -90,6 +91,7 @@ public class Principal {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private static void simulatedAnnealingSearch(Ciudad ciudad, int heur, int sAIterations2, int sAIterationsPerStep2, int sAK2, int sALambda2) {
 		try {
 
