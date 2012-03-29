@@ -9,6 +9,7 @@ public class Ciudad {
 
 	Bicing estaciones;
 	Vector<Transporte> transportes;
+	Vector<Boolean> estacionesOcupadas;
 	Integer numFurgonetas;
 	Random random;
 
@@ -18,8 +19,14 @@ public class Ciudad {
 		// init transportes
 		this.transportes = new Vector<Transporte>();
 		// vars
+		this.estacionesOcupadas = new Vector<Boolean>();
 		this.numFurgonetas = f;
 		this.random = random;
+
+		// Marcamos las estaciones como libres
+		for (int i = 0; i < this.estacionesOcupadas.size(); i++) {
+			this.estacionesOcupadas.set(i, false);
+		}
 	}
 
 	public void initEstrategiaSimple() {
@@ -50,9 +57,9 @@ public class Ciudad {
 			// Calculamos bicicletas de salida
 			aux = random.nextInt(estaciones.getStationDoNotMove(st));
 			if (aux > 30) {
-				transAux.bc_salida = 30;
+				transAux.bcOrigen = 30;
 			} else {
-				transAux.bc_salida = aux + 1;
+				transAux.bcOrigen = aux + 1;
 			}
 
 			// Decidimos numero de paradas
@@ -62,8 +69,8 @@ public class Ciudad {
 				while (aux == transAux.getOrigen()) {
 					aux = random.nextInt(numEstaciones);
 				}
-				transAux.setParada_uno(aux);
-				transAux.setBc_p_uno(transAux.bc_salida);
+				transAux.setParadaUno(aux);
+				transAux.setBcParadaUno(transAux.bcOrigen);
 
 			} else {
 				// dos paradas
@@ -71,16 +78,16 @@ public class Ciudad {
 				while (aux == transAux.getOrigen()) {
 					aux = random.nextInt(numEstaciones);
 				}
-				transAux.setParada_uno(aux);
-				transAux.setBc_p_uno(random.nextInt(transAux.bc_salida));
+				transAux.setParadaUno(aux);
+				transAux.setBcParadaUno(random.nextInt(transAux.bcOrigen));
 
 				aux = random.nextInt(numEstaciones);
-				while (aux == transAux.getParada_uno() || aux == transAux.getOrigen()) {
+				while (aux == transAux.getParadaUno() || aux == transAux.getOrigen()) {
 					aux = random.nextInt(numEstaciones);
 				}
 
-				transAux.setParada_dos(aux);
-				transAux.setBc_p_dos(transAux.bc_salida - transAux.getBc_p_uno());
+				transAux.setParadaDos(aux);
+				transAux.setBcParadaDos(transAux.bcOrigen - transAux.getBcParadaUno());
 
 			}
 			transportes.add(transAux);
@@ -89,6 +96,7 @@ public class Ciudad {
 	}
 
 	public void initEstrategiaElaborada() {
+		// TODO
 		// Estrategia elaborada para crear estado inicial
 		// Inicializamos f(o menos ?) transportes de forma que haya furgonetas
 		// en las estaciones con mayor numero de bicicletas sobrantes
@@ -99,6 +107,7 @@ public class Ciudad {
 	}
 
 	public double getBeneficios() {
+		// TODO
 		// Devuelve los beneficios obtenidos por llevar bicicletas y acercarse a
 		// la demanda de cada estacion
 
@@ -124,14 +133,64 @@ public class Ciudad {
 
 		for (int i = 0; i < transportes.size(); i++) {
 			// Gastos origen estacion uno
-			gastos = gastos + (((transportes.get(i).getBc_salida() / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getOrigen(), transportes.get(i).getParada_uno()));
+			gastos = gastos + (((transportes.get(i).getBcOrigen() / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getOrigen(), transportes.get(i).getParadaUno()));
 
 			// Gastos estacion uno estacion dos
-			gastos = gastos + ((((transportes.get(i).getBc_salida() - transportes.get(i).getBc_p_uno()) / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getParada_uno(), transportes.get(i).getParada_dos()));
+			gastos = gastos + ((((transportes.get(i).getBcOrigen() - transportes.get(i).getBcParadaUno()) / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getParadaUno(), transportes.get(i).getParadaDos()));
 
 		}
 
 		return gastos;
+	}
+
+	public int getTransporteConEstacion(int st) {
+		// Devuelve el identificador del transporte (indice en el vector
+		// transportes) del transporte con furgoneta en la estacion origen st
+
+		for (int i = 0; i < this.transportes.size(); i++) {
+			if (this.transportes.get(i).getOrigen() == st) {
+				return i;
+			}
+		}
+		return -1;
+
+	}
+
+	public Boolean hayFurgonetaEnEstacion(int st) {
+		// Devuelve cierto si existe un transporte con origen igual a st, falso
+		// en caso contrario
+		return this.estacionesOcupadas.elementAt(st);
+	}
+
+	public void a–adirTransporte(int origen, int bcOrigen, int paradaUno, int bcParadaUno, int paradaDos, int bcParadaDos) {
+		// Creamos un nuevo transporte y lo a–adimos al vector de transportes
+		Transporte transAux = new Transporte();
+		transAux.setOrigen(origen);
+		transAux.setBcOrigen(bcOrigen);
+		transAux.setParadaUno(paradaUno);
+		transAux.setBcParadaUno(bcParadaUno);
+		transAux.setParadaDos(paradaDos);
+		transAux.setBcParadaDos(bcParadaDos);
+		this.transportes.add(transAux);
+
+		// Marcamos la estacion como ocupada
+		this.estacionesOcupadas.set(origen, true);
+	}
+
+	public void modificarTransporte(int origen, int nuevoOrigen, int bcOrigen, int paradaUno, int bcParadaUno, int paradaDos, int bcParadaDos) {
+		Transporte transAux = this.transportes.get(getTransporteConEstacion(origen));
+		transAux.setOrigen(nuevoOrigen);
+		transAux.setBcOrigen(bcOrigen);
+		transAux.setParadaUno(paradaUno);
+		transAux.setBcParadaUno(bcParadaUno);
+		transAux.setParadaDos(paradaDos);
+		transAux.setBcParadaDos(bcParadaDos);
+
+		// Marcamos la nueva estacion como ocupada
+		if (origen != nuevoOrigen) {
+			this.estacionesOcupadas.set(origen, false);
+			this.estacionesOcupadas.set(nuevoOrigen, true);
+		}
 	}
 
 	public void printEstaciones() {
@@ -152,11 +211,11 @@ public class Ciudad {
 		for (int i = 0; i < transportes.size(); i++) {
 			System.out.print("Transporte " + i);
 			System.out.print(" - origen: " + transportes.get(i).getOrigen());
-			System.out.print(" - bc_origen: " + transportes.get(i).getBc_salida());
-			System.out.print(" - parada  uno: " + transportes.get(i).getParada_uno());
-			System.out.print(" - bc_uno: " + transportes.get(i).getBc_p_uno());
-			System.out.print(" - parada  dos: " + transportes.get(i).getParada_dos());
-			System.out.print(" - bc_dos: " + transportes.get(i).getBc_p_dos());
+			System.out.print(" - bc_origen: " + transportes.get(i).getBcOrigen());
+			System.out.print(" - parada  uno: " + transportes.get(i).getParadaUno());
+			System.out.print(" - bc_uno: " + transportes.get(i).getBcParadaUno());
+			System.out.print(" - parada  dos: " + transportes.get(i).getParadaDos());
+			System.out.print(" - bc_dos: " + transportes.get(i).getBcParadaDos());
 			System.out.println();
 		}
 

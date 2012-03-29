@@ -3,24 +3,24 @@ package bicing;
 public class Transporte {
 
 	int origen; // estacion origen
-	int bc_salida; // int bicicletas de salida
+	int bcOrigen; // int bicicletas de origen
 
-	int parada_uno; // destino 1
-	int bc_p_uno; // bicicletas destino 1
+	int paradaUno; // destino 1
+	int bcParadaUno; // bicicletas destino 1
 
-	int parada_dos; // destino 2
-	int bc_p_dos; // bicicletas destino 2
+	int paradaDos; // destino 2
+	int bcParadaDos; // bicicletas destino 2
 
 	public Transporte() {
 
 		origen = -1;
-		bc_salida = -1;
+		bcOrigen = -1;
 
-		parada_uno = -1;
-		parada_dos = -1;
+		paradaUno = -1;
+		paradaDos = -1;
 
-		bc_p_uno = -1;
-		bc_p_dos = -1;
+		bcParadaUno = -1;
+		bcParadaDos = -1;
 
 	}
 
@@ -32,55 +32,55 @@ public class Transporte {
 		this.origen = origen;
 	}
 
-	public int getBc_salida() {
-		return bc_salida;
+	public int getBcOrigen() {
+		return bcOrigen;
 	}
 
-	public void setBc_salida(int bc_salida) {
-		this.bc_salida = bc_salida;
+	public void setBcOrigen(int bc_salida) {
+		this.bcOrigen = bc_salida;
 	}
 
-	public int getParada_uno() {
-		return parada_uno;
+	public int getParadaUno() {
+		return paradaUno;
 	}
 
-	public void setParada_uno(int parada_uno) {
-		this.parada_uno = parada_uno;
+	public void setParadaUno(int parada_uno) {
+		this.paradaUno = parada_uno;
 	}
 
-	public int getBc_p_uno() {
-		return bc_p_uno;
+	public int getBcParadaUno() {
+		return bcParadaUno;
 	}
 
-	public void setBc_p_uno(int bc_p_uno) {
-		this.bc_p_uno = bc_p_uno;
+	public void setBcParadaUno(int bc_p_uno) {
+		this.bcParadaUno = bc_p_uno;
 	}
 
-	public int getParada_dos() {
-		return parada_dos;
+	public int getParadaDos() {
+		return paradaDos;
 	}
 
-	public void setParada_dos(int parada_dos) {
-		this.parada_dos = parada_dos;
+	public void setParadaDos(int parada_dos) {
+		this.paradaDos = parada_dos;
 	}
 
-	public int getBc_p_dos() {
-		return bc_p_dos;
+	public int getBcParadaDos() {
+		return bcParadaDos;
 	}
 
-	public void setBc_p_dos(int bc_p_dos) {
-		this.bc_p_dos = bc_p_dos;
+	public void setBcParadaDos(int bc_p_dos) {
+		this.bcParadaDos = bc_p_dos;
 	}
 
 	public void print(int i) {
 		System.out.print("Transporte " + i + ", estacion origen: " + this.origen);
-		System.out.print(" - bc salida: " + this.bc_salida);
+		System.out.print(" - bc salida: " + this.bcOrigen);
 
-		System.out.print(" - parada1: " + this.parada_uno);
-		System.out.print(" - bc_p1: " + this.bc_p_uno);
+		System.out.print(" - parada1: " + this.paradaUno);
+		System.out.print(" - bc_p1: " + this.bcParadaUno);
 
-		System.out.print(" - parada2: " + this.parada_dos);
-		System.out.print(" - bc_p2: " + this.bc_p_dos);
+		System.out.print(" - parada2: " + this.paradaDos);
+		System.out.print(" - bc_p2: " + this.bcParadaDos);
 		System.out.println();
 	}
 }
