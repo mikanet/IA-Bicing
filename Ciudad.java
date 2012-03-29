@@ -98,15 +98,40 @@ public class Ciudad {
 
 	}
 
-	public int getBeneficios() {
+	public double getBeneficios() {
 		// Devuelve los beneficios obtenidos por llevar bicicletas y acercarse a
 		// la demanda de cada estacion
-		return 0;
+
+		// El acuerdo con Bicing incluye que nos pague un euro por cada
+		// bicicleta que transportemos que haga que el numero de bicicletas de
+		// una estacion se acerque a la demanda
+
+		// Por contra nos cobrara un euro por cada bicicleta que transportemos
+		// que aleje a una estacion de su prevision. Es decir, nos descontaran
+		// por las bicicletas que movamos que hagan que una estacion quede por
+		// debajo de la demanda prevista.
+		return 0.0;
 	}
 
-	public int getGastos() {
+	public double getGastos() {
 		// Devuelve los gastos producidos debido a los transportes de bicicletas
-		return 0;
+
+		// suponiendo que nb es el numero de bicicletas que transportamos en una
+		// furgoneta y d(i,j) es la distancia entre dos estaciones, el coste en
+		// euros es: coste(i,j)=((nb div 10)+1) * d(i,j)
+
+		double gastos = 0.0;
+
+		for (int i = 0; i < transportes.size(); i++) {
+			// Gastos origen estacion uno
+			gastos = gastos + (((transportes.get(i).getBc_salida() / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getOrigen(), transportes.get(i).getParada_uno()));
+
+			// Gastos estacion uno estacion dos
+			gastos = gastos + ((((transportes.get(i).getBc_salida() - transportes.get(i).getBc_p_uno()) / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getParada_uno(), transportes.get(i).getParada_dos()));
+
+		}
+
+		return gastos;
 	}
 
 	public void printEstaciones() {
