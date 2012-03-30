@@ -53,6 +53,7 @@ public class Ciudad {
 		// Inicializamos f transportes de forma aleatoria comprobando que no
 		// repetimos furgonetas por estacion y que una furgoneta no sale con mas
 		// bicicletas de las disponibles (las sobrantes)
+		int timeout = 0;
 
 		Vector<Integer> estacionOcupada = new Vector<Integer>();
 		int numEstaciones = estaciones.getNumStations();
@@ -60,13 +61,23 @@ public class Ciudad {
 		Transporte transAux;
 
 		for (int i = 0; i < numFurgonetas; i++) {
-			// FIXME si en ninguna estacion sobran o do not move no es 0 bucle
-			// infinito :(
-			st = (random.nextInt(numEstaciones));
+
 			// No enviamos furgonetas a estaciones donde no sobraran o no se
 			// pueden llevar ninguna
+			st = (random.nextInt(numEstaciones));
+			timeout = 0;
 			while (estacionOcupada.contains(st) || ((estaciones.getStationNextState(st) <= estaciones.getDemandNextHour(st)) || (estaciones.getStationDoNotMove(st) <= 0))) {
 				st = (random.nextInt(numEstaciones));
+				timeout = timeout + 1;
+				if (timeout > numEstaciones) {
+					break;
+				}
+			}
+
+			if (timeout > numEstaciones) {
+				while (estacionOcupada.contains(st)) {
+					st = (random.nextInt(numEstaciones));
+				}
 			}
 			estacionOcupada.add(st);
 

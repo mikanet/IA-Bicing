@@ -41,12 +41,25 @@ public class BicingSuccessorFunctionHC implements SuccessorFunction {
 												nuevaCiudad.a–adirTransporte(origen, bcOrigen, paradaUno, bcParadaUno, -1, -1);
 												result.add(new Successor("", nuevaCiudad));
 
+												// System.out.println("a–adir("
+												// + origen + "," + bcOrigen +
+												// "," + paradaUno + "," +
+												// bcParadaUno + "," + -1 + ","
+												// + -1 + ")");
+
 											} else {
 												// Hay parada dos
 
 												Ciudad nuevaCiudad = new Ciudad(estCiudad);
 												nuevaCiudad.a–adirTransporte(origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, bcOrigen - bcParadaUno);
 												result.add(new Successor("", nuevaCiudad));
+
+												// System.out.println("a–adir("
+												// + origen + "," + bcOrigen +
+												// "," + paradaUno + "," +
+												// bcParadaUno + "," + paradaDos
+												// + "," + (bcOrigen -
+												// bcParadaUno) + ")");
 
 											}
 										}
