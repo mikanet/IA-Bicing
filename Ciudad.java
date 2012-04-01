@@ -129,10 +129,19 @@ public class Ciudad {
 
 	}
 
+	// ordena el vector v en orden descendente
+	public void ordena(Vector<EstacionesCompare> v) {
+		Collections.sort(v, new Comparator<Object>() {
+			public int compare(Object a, Object b) {
+				return (-(new Integer(((EstacionesCompare) a).getSobrantes())).compareTo(new Integer(((EstacionesCompare) b).getSobrantes())));
+			}
+		});
+	}
+
 	public void initEstrategiaElaborada() {
 		// TODO
 		// Estrategia elaborada para crear estado inicial
-		// Inicializamos f(o menos ?) transportes de forma que haya furgonetas
+		// Inicializamos f(o menos) transportes de forma que haya furgonetas
 		// en las estaciones con mayor numero de bicicletas sobrantes
 		// comprobando que no repetimos furgonetas por estacion y que una
 		// furgoneta no sale con mas bicicletas de las disponibles (las
@@ -148,6 +157,10 @@ public class Ciudad {
 			int faltan = estaciones.getDemandNextHour(i) - estaciones.getStationNextState(i);
 
 			if (notMove > 0) {
+				// limitamos el numero de bicicletas que cargaremos a 30
+				if (notMove > 30)
+					notMove = 30;
+
 				EstacionesCompare aux = new EstacionesCompare(i, notMove);
 				estAuxSobrantes.add(aux);
 			}
@@ -156,16 +169,69 @@ public class Ciudad {
 				estAuxDemanda.add(aux2);
 			}
 		}
-		Collections.sort(estAuxSobrantes, new Comparator<Object>() {
-			public int compare(Object a, Object b) {
-				return (-(new Integer(((EstacionesCompare) a).getSobrantes())).compareTo(new Integer(((EstacionesCompare) b).getSobrantes())));
+
+		ordena(estAuxSobrantes);
+		ordena(estAuxDemanda);
+
+		System.out.println("Do not move: ");
+		for (int i = 0; i < estAuxSobrantes.size(); i++)
+			System.out.print(estAuxSobrantes.elementAt(i).getSobrantes() + ", ");
+
+		System.out.println("Faltan: ");
+		for (int i = 0; i < estAuxDemanda.size(); i++)
+			System.out.print(estAuxDemanda.elementAt(i).getSobrantes() + ", ");
+
+		System.out.println("Furgonetas: " + numFurgonetas);
+
+		for (int i = 0; (i < numFurgonetas) && (estAuxSobrantes.size() > 0) && (estAuxDemanda.size() > 0); i++) {
+			System.out.print("1 ");
+			Transporte trans = new Transporte();
+			EstacionesCompare estDem0 = estAuxDemanda.elementAt(0);
+			EstacionesCompare estSob0 = estAuxSobrantes.elementAt(0);
+
+			trans.setOrigen(estSob0.getOrigen());
+			trans.setParadaUno(estDem0.getOrigen());
+			int diferencia = estDem0.getSobrantes() - estSob0.getSobrantes();
+
+			// si la estacion necesitaba mas bicicletas de las que se pueden
+			// transportar, solo habra una parada con bcParadaUno = sobrantes
+			// de la parada origen.
+			if (diferencia > 0) {
+				trans.setBcParadaUno(estSob0.getSobrantes());
+				trans.setBcOrigen(estSob0.getSobrantes());
+
+				// actualizamos vector de demandas
+				estDem0.setSobrantes(estDem0.getSobrantes() - estSob0.getSobrantes());
+				if ((estAuxDemanda.size() > 1) && (estDem0.getSobrantes() < estAuxDemanda.elementAt(1).getSobrantes()))
+					ordena(estAuxDemanda);
 			}
-		});
-		Collections.sort(estAuxDemanda, new Comparator<Object>() {
-			public int compare(Object a, Object b) {
-				return (-(new Integer(((EstacionesCompare) a).getSobrantes())).compareTo(new Integer(((EstacionesCompare) b).getSobrantes())));
+
+			// en caso contrario, habra dos paradas
+			else {
+				trans.setBcParadaUno(estDem0.getSobrantes());
+				estAuxDemanda.remove(0);
+
+				if (estAuxDemanda.size() > 0) {
+					EstacionesCompare estDem1 = estAuxDemanda.elementAt(0);
+					trans.setParadaDos(estDem1.getOrigen());
+					if (estDem1.getSobrantes() + trans.getBcParadaUno() <= 30) {
+						trans.setBcParadaDos(estDem1.getSobrantes());
+						estAuxDemanda.remove(0);
+					} else {
+						trans.setBcParadaDos(30 - trans.getBcParadaUno());
+						estDem1.setSobrantes(estDem1.getSobrantes() - trans.getBcParadaDos());
+						if ((estAuxDemanda.size() > 1) && (estDem1.getSobrantes() < estAuxDemanda.elementAt(1).getSobrantes()))
+							ordena(estAuxDemanda);
+					}
+				}
+				trans.setBcOrigen(trans.getBcParadaUno() + trans.getBcParadaDos());
 			}
-		});
+			estAuxSobrantes.remove(0);
+			transportes.add(trans);
+		}
+
+		System.out.println("");
+		printTransportes();
 
 	}
 
