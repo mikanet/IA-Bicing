@@ -210,18 +210,19 @@ public class Ciudad {
 			else {
 				trans.setBcParadaUno(estDem0.getSobrantes());
 				estAuxDemanda.remove(0);
+				estSob0.setSobrantes(estSob0.getSobrantes() - trans.getBcParadaUno());
 
 				if (estAuxDemanda.size() > 0) {
 					EstacionesCompare estDem1 = estAuxDemanda.elementAt(0);
 					trans.setParadaDos(estDem1.getOrigen());
-					if (estDem1.getSobrantes() + trans.getBcParadaUno() <= 30) {
-						trans.setBcParadaDos(estDem1.getSobrantes());
-						estAuxDemanda.remove(0);
-					} else {
-						trans.setBcParadaDos(30 - trans.getBcParadaUno());
+					if (estDem1.getSobrantes() > estSob0.getSobrantes()) {
+						trans.setBcParadaDos(estSob0.getSobrantes());
 						estDem1.setSobrantes(estDem1.getSobrantes() - trans.getBcParadaDos());
 						if ((estAuxDemanda.size() > 1) && (estDem1.getSobrantes() < estAuxDemanda.elementAt(1).getSobrantes()))
 							ordena(estAuxDemanda);
+					} else {
+						trans.setBcParadaDos(estDem1.getSobrantes());
+						estAuxDemanda.remove(0);
 					}
 				}
 				trans.setBcOrigen(trans.getBcParadaUno() + trans.getBcParadaDos());
