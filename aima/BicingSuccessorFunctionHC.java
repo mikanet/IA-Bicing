@@ -38,7 +38,7 @@ public class BicingSuccessorFunctionHC implements SuccessorFunction {
 												// No hay parada dos
 
 												Ciudad nuevaCiudad = new Ciudad(estCiudad);
-												nuevaCiudad.a–adirTransporte(origen, bcOrigen, paradaUno, bcParadaUno, -1, -1);
+												nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcParadaUno, -1, -1);
 												result.add(new Successor("", nuevaCiudad));
 
 												// System.out.println("a–adir("
@@ -51,10 +51,10 @@ public class BicingSuccessorFunctionHC implements SuccessorFunction {
 												// Hay parada dos
 
 												Ciudad nuevaCiudad = new Ciudad(estCiudad);
-												nuevaCiudad.a–adirTransporte(origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, bcOrigen - bcParadaUno);
+												nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, bcOrigen - bcParadaUno);
 												result.add(new Successor("", nuevaCiudad));
 
-												// System.out.println("a–adir("
+												// System.out.println("anadir("
 												// + origen + "," + bcOrigen +
 												// "," + paradaUno + "," +
 												// bcParadaUno + "," + paradaDos

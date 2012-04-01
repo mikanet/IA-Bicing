@@ -1,5 +1,7 @@
 package bicing;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 import java.util.Vector;
 
@@ -136,6 +138,35 @@ public class Ciudad {
 		// furgoneta no sale con mas bicicletas de las disponibles (las
 		// sobrantes)
 
+		// estAuxSobrantes es un vector ordenado segun las bicicletas sobrantes
+		// estAuxDemanda es un vector ordenado segun las bicicletas que faltaran
+		// para cubrir la demanda
+		Vector<EstacionesCompare> estAuxSobrantes = new Vector<EstacionesCompare>();
+		Vector<EstacionesCompare> estAuxDemanda = new Vector<EstacionesCompare>();
+		for (int i = 0; i < estaciones.getNumStations(); i++) {
+			int notMove = estaciones.getStationDoNotMove(i);
+			int faltan = estaciones.getDemandNextHour(i) - estaciones.getStationNextState(i);
+
+			if (notMove > 0) {
+				EstacionesCompare aux = new EstacionesCompare(i, notMove);
+				estAuxSobrantes.add(aux);
+			}
+			if (faltan > 0) {
+				EstacionesCompare aux2 = new EstacionesCompare(i, faltan);
+				estAuxDemanda.add(aux2);
+			}
+		}
+		Collections.sort(estAuxSobrantes, new Comparator<Object>() {
+			public int compare(Object a, Object b) {
+				return (-(new Integer(((EstacionesCompare) a).getSobrantes())).compareTo(new Integer(((EstacionesCompare) b).getSobrantes())));
+			}
+		});
+		Collections.sort(estAuxDemanda, new Comparator<Object>() {
+			public int compare(Object a, Object b) {
+				return (-(new Integer(((EstacionesCompare) a).getSobrantes())).compareTo(new Integer(((EstacionesCompare) b).getSobrantes())));
+			}
+		});
+
 	}
 
 	public double getBeneficios() {
@@ -198,7 +229,7 @@ public class Ciudad {
 		return this.estacionesOcupadas.elementAt(st);
 	}
 
-	public void a–adirTransporte(int origen, int bcOrigen, int paradaUno, int bcParadaUno, int paradaDos, int bcParadaDos) {
+	public void addTransporte(int origen, int bcOrigen, int paradaUno, int bcParadaUno, int paradaDos, int bcParadaDos) {
 		// Creamos un nuevo transporte y lo a–adimos al vector de transportes
 		Transporte transAux = new Transporte();
 		transAux.setOrigen(origen);

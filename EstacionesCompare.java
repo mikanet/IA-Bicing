@@ -7,6 +7,11 @@ public class EstacionesCompare {
 	public EstacionesCompare() {
 	}
 
+	public EstacionesCompare(int origen, int sobrantes) {
+		this.origen = origen;
+		this.sobrantes = sobrantes;
+	}
+
 	public int getOrigen() {
 		return this.origen;
 	}
