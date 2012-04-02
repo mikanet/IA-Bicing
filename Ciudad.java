@@ -139,7 +139,6 @@ public class Ciudad {
 	}
 
 	public void initEstrategiaElaborada() {
-		// TODO
 		// Estrategia elaborada para crear estado inicial
 		// Inicializamos f(o menos) transportes de forma que haya furgonetas
 		// en las estaciones con mayor numero de bicicletas sobrantes
