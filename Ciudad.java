@@ -236,8 +236,29 @@ public class Ciudad {
 
 	}
 
+	// Funcion auxiliar para calcular los beneficios de una parada
+	// bc: bicicletas que lleva la furgoneta a esa estacion
+	// faltaban: bicicletas que faltaban para cubrir la demanda
+	private double calculaBeneficiosParada(int bc, int faltaban) {
+		double beneficios = 0.0;
+
+		// si no faltaba ninguna bicicleta, no nos pagan
+		if (faltaban > 0) {
+			// si llevamos mas de las que faltaban, solo nos pagan por las
+			// que faltaban
+			if (bc >= faltaban) {
+				beneficios += faltaban;
+			}
+			// si llevamos menos de las que faltaban, nos pagan por todas
+			// las que llevamos
+			else {
+				beneficios += bc;
+			}
+		}
+		return beneficios;
+	}
+
 	public double getBeneficios() {
-		// TODO
 		// Devuelve los beneficios obtenidos por llevar bicicletas y acercarse a
 		// la demanda de cada estacion
 
@@ -249,7 +270,26 @@ public class Ciudad {
 		// que aleje a una estacion de su prevision. Es decir, nos descontaran
 		// por las bicicletas que movamos que hagan que una estacion quede por
 		// debajo de la demanda prevista.
-		return 0.0;
+		double beneficios = 0.0;
+		for (int i = 0; i < transportes.size(); i++) {
+			Transporte t = transportes.elementAt(i);
+			int sobrantes = estaciones.getStationNextState(t.getOrigen()) - estaciones.getDemandNextHour(t.getOrigen());
+
+			// nos restan un euro por cada bici que se aleje de la demanda
+			if (t.getBcOrigen() > sobrantes) {
+				beneficios -= t.getBcOrigen() - sobrantes;
+			}
+
+			int faltabanParadaUno = estaciones.getDemandNextHour(t.getParadaUno()) - estaciones.getStationNextState(t.getParadaUno());
+			beneficios += calculaBeneficiosParada(t.getBcParadaUno(), faltabanParadaUno);
+
+			// solo si tenemos parada dos
+			if (t.getParadaDos() != -1) {
+				int faltabanParadaDos = estaciones.getDemandNextHour(t.getParadaDos()) - estaciones.getStationNextState(t.getParadaDos());
+				beneficios += calculaBeneficiosParada(t.getBcParadaDos(), faltabanParadaDos);
+			}
+		}
+		return beneficios;
 	}
 
 	public double getGastos() {
