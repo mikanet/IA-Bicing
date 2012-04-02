@@ -53,7 +53,7 @@ public class Principal {
 			ciudad.initEstrategiaElaborada();
 		}
 
-		System.out.println("[ Inicializacion y estado finalizado ]");
+		System.out.println("[ Llamada a clases AIMA ]");
 
 		// AIMA search
 		if (saHc == 1) {

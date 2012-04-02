@@ -6,15 +6,33 @@ import java.util.Vector;
 import aima.search.framework.Successor;
 import aima.search.framework.SuccessorFunction;
 import bicing.Ciudad;
+import bicing.Principal;
 
 public class BicingSuccessorFunctionSA implements SuccessorFunction {
 
-	@SuppressWarnings("unused")
 	public List<Successor> getSuccessors(Object aState) {
 		Vector<Successor> result = new Vector<Successor>();
 		Ciudad estCiudad = (Ciudad) aState;
 
-		return null;
+		// Aplicamos operadores al azar
+
+		do {
+			switch (Principal.random.nextInt(2)) {
+
+			case 0:
+				// Operador addTransporte
+
+				break;
+
+			case 1:
+				// Operador delTransporte
+
+				break;
+
+			}
+		} while (result.isEmpty());
+
+		return result;
 	}
 
 }

@@ -14,8 +14,10 @@ public class BicingSuccessorFunctionHC implements SuccessorFunction {
 		// Cast del objecto aState a ciudad
 		Ciudad estCiudad = (Ciudad) aState;
 
-		// Por cada posible furgoneta
-		for (int t = 0; t < Ciudad.getNumFurgonetas(); t++) {
+		// Aplicamos operador addTransporte
+
+		// Por cada posible furgoneta, sin passarnos
+		for (int t = 0; t < Ciudad.getNumFurgonetas() - estCiudad.transportes.size(); t++) {
 			// Por cada posible origen
 			for (int origen = 0; origen < Ciudad.estaciones.getNumStations(); origen++) {
 				// Si no furgoneta origen, doNotMove > = 1
@@ -72,6 +74,18 @@ public class BicingSuccessorFunctionHC implements SuccessorFunction {
 
 				}
 			}
+		}
+
+		// Aplicamos operador delTransporte
+		for (int t = 0; t < estCiudad.transportes.size(); t++) {
+
+			// TODO permutaciones del conjunto para eliminar todas las
+			// possibilidades
+
+			Ciudad nuevaCiudad = new Ciudad(estCiudad);
+			nuevaCiudad.delTransporte(t);
+			result.add(new Successor("", nuevaCiudad));
+
 		}
 
 		return result;

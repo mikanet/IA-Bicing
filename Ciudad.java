@@ -367,6 +367,12 @@ public class Ciudad {
 		}
 	}
 
+	public void delTransporte(int index) {
+		// Eliminamos el transporte y desmarcamos la estacion como ocupada
+		this.estacionesOcupadas.set(this.transportes.get(index).origen, false);
+		this.transportes.remove(index);
+	}
+
 	public void printEstaciones() {
 		// print estaciones
 		System.out.println("Numero de estaciones: " + estaciones.getNumStations());
