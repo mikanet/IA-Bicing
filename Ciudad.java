@@ -302,11 +302,13 @@ public class Ciudad {
 
 		for (int i = 0; i < transportes.size(); i++) {
 			// Gastos origen estacion uno
-			gastos = gastos + (((transportes.get(i).getBcOrigen() / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getOrigen(), transportes.get(i).getParadaUno()));
+			if (transportes.get(i).getBcParadaUno() != -1) {
+				gastos = gastos + (((transportes.get(i).getBcOrigen() / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getOrigen(), transportes.get(i).getParadaUno()));
 
-			// Gastos estacion uno estacion dos
-			gastos = gastos + ((((transportes.get(i).getBcOrigen() - transportes.get(i).getBcParadaUno()) / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getParadaUno(), transportes.get(i).getParadaDos()));
-
+				// Gastos estacion uno estacion dos
+				if (transportes.get(i).getParadaDos() != -1)
+					gastos = gastos + ((((transportes.get(i).getBcOrigen() - transportes.get(i).getBcParadaUno()) / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getParadaUno(), transportes.get(i).getParadaDos()));
+			}
 		}
 
 		return gastos;
