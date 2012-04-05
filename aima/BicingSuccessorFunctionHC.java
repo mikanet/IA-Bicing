@@ -43,25 +43,11 @@ public class BicingSuccessorFunctionHC implements SuccessorFunction {
 												nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcParadaUno, -1, -1);
 												result.add(new Successor("", nuevaCiudad));
 
-												// System.out.println("a–adir("
-												// + origen + "," + bcOrigen +
-												// "," + paradaUno + "," +
-												// bcParadaUno + "," + -1 + ","
-												// + -1 + ")");
-
 											} else {
 												// Hay parada dos
-
 												Ciudad nuevaCiudad = new Ciudad(estCiudad);
 												nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, bcOrigen - bcParadaUno);
 												result.add(new Successor("", nuevaCiudad));
-
-												// System.out.println("anadir("
-												// + origen + "," + bcOrigen +
-												// "," + paradaUno + "," +
-												// bcParadaUno + "," + paradaDos
-												// + "," + (bcOrigen -
-												// bcParadaUno) + ")");
 
 											}
 										}
@@ -78,9 +64,6 @@ public class BicingSuccessorFunctionHC implements SuccessorFunction {
 
 		// Aplicamos operador delTransporte
 		for (int t = 0; t < estCiudad.transportes.size(); t++) {
-
-			// TODO permutaciones del conjunto para eliminar todas las
-			// possibilidades
 
 			Ciudad nuevaCiudad = new Ciudad(estCiudad);
 			nuevaCiudad.delTransporte(t);

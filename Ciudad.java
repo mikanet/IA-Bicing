@@ -149,6 +149,7 @@ public class Ciudad {
 		// estAuxSobrantes es un vector ordenado segun las bicicletas sobrantes
 		// estAuxDemanda es un vector ordenado segun las bicicletas que faltaran
 		// para cubrir la demanda
+
 		Vector<EstacionesCompare> estAuxSobrantes = new Vector<EstacionesCompare>();
 		Vector<EstacionesCompare> estAuxDemanda = new Vector<EstacionesCompare>();
 		for (int i = 0; i < estaciones.getNumStations(); i++) {
@@ -172,18 +173,20 @@ public class Ciudad {
 		ordena(estAuxSobrantes);
 		ordena(estAuxDemanda);
 
-		System.out.println("Do not move: ");
-		for (int i = 0; i < estAuxSobrantes.size(); i++)
-			System.out.print(estAuxSobrantes.elementAt(i).getSobrantes() + ", ");
-
-		System.out.println("Faltan: ");
-		for (int i = 0; i < estAuxDemanda.size(); i++)
-			System.out.print(estAuxDemanda.elementAt(i).getSobrantes() + ", ");
-
-		System.out.println("Furgonetas: " + numFurgonetas);
+		// System.out.println("Do not move: ");
+		// for (int i = 0; i < estAuxSobrantes.size(); i++) {
+		// System.out.print(estAuxSobrantes.elementAt(i).getSobrantes() + ", ");
+		// }
+		//
+		// System.out.println("Faltan: ");
+		// for (int i = 0; i < estAuxDemanda.size(); i++) {
+		// System.out.print(estAuxDemanda.elementAt(i).getSobrantes() + ", ");
+		// }
+		//
+		// System.out.println("Furgonetas: " + numFurgonetas);
 
 		for (int i = 0; (i < numFurgonetas) && (estAuxSobrantes.size() > 0) && (estAuxDemanda.size() > 0); i++) {
-			System.out.print("1 ");
+			// System.out.print("1 ");
 			Transporte trans = new Transporte();
 			EstacionesCompare estDem0 = estAuxDemanda.elementAt(0);
 			EstacionesCompare estSob0 = estAuxSobrantes.elementAt(0);
@@ -230,8 +233,8 @@ public class Ciudad {
 			transportes.add(trans);
 		}
 
-		System.out.println("");
-		printTransportes();
+		// System.out.println("");
+		// printTransportes();
 
 	}
 
@@ -269,6 +272,7 @@ public class Ciudad {
 		// que aleje a una estacion de su prevision. Es decir, nos descontaran
 		// por las bicicletas que movamos que hagan que una estacion quede por
 		// debajo de la demanda prevista.
+
 		double beneficios = 0.0;
 		for (int i = 0; i < transportes.size(); i++) {
 			Transporte t = transportes.elementAt(i);

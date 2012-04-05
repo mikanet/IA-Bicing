@@ -62,7 +62,7 @@ public class Principal {
 			hillClimbingSearch(ciudad, heur);
 		}
 
-		ciudad.printTransportes();
+		// ciudad.printTransportes();
 		// ciudad.printEstaciones();
 
 		System.out.println("[ END ]");
@@ -72,6 +72,8 @@ public class Principal {
 	private static void hillClimbingSearch(Ciudad ciudad, int heur) {
 		try {
 
+			long start = System.currentTimeMillis();
+
 			Problem problem = null;
 			if (heur == 1) {
 				problem = new Problem(ciudad, new BicingSuccessorFunctionHC(), new BicingGoalTest(), new Bicing_HF_maxDistribucion());
@@ -80,9 +82,13 @@ public class Principal {
 			}
 			Search search = new HillClimbingSearch();
 			SearchAgent agent = new SearchAgent(problem, search);
+			long end = System.currentTimeMillis();
+
+			System.out.println("Iterations: " + search.getMetrics().getInt("Iterations"));
+			System.out.println("Time: " + ((long) (end - start) / 1000.0) + "s");
 
 			// System.out.println(search.getGoalState());
-			printInstrumentation(agent.getInstrumentation());
+			// printInstrumentation(agent.getInstrumentation());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -92,6 +98,8 @@ public class Principal {
 	private static void simulatedAnnealingSearch(Ciudad ciudad, int heur, int sAIterations2, int sAIterationsPerStep2, int sAK2, int sALambda2) {
 		try {
 
+			long start = System.currentTimeMillis();
+
 			Problem problem = null;
 			if (heur == 1) {
 				problem = new Problem(ciudad, new BicingSuccessorFunctionSA(), new BicingGoalTest(), new Bicing_HF_maxDistribucion());
@@ -100,9 +108,13 @@ public class Principal {
 			}
 			Search search = new SimulatedAnnealingSearch(SAIterations, SAIterationsPerStep, SAK, SALambda);
 			SearchAgent agent = new SearchAgent(problem, search);
+			long end = System.currentTimeMillis();
+
+			System.out.println("Iterations: " + search.getMetrics().getInt("Iterations"));
+			System.out.println("Time: " + ((long) (end - start) / 1000.0) + "s");
 
 			// System.out.println(search.getGoalState());
-			printInstrumentation(agent.getInstrumentation());
+			// printInstrumentation(agent.getInstrumentation());
 
 		} catch (Exception e) {
 			e.printStackTrace();
