@@ -39,21 +39,21 @@ public class Principal {
 		// Read data from user
 		readDataFromUser();
 
-		System.out.println("[ Inicializando... ]");
+		System.out.println("[ Init ciudad... ]");
 
 		// State initialization
 		Ciudad ciudad = new Ciudad(ESTACIONES, BICICLETAS, FURGONETAS, DEMANDA, SEED, random);
 
-		System.out.println("[ Preparacion estado inicial... ]");
-
 		// Initialization mode
 		if (initMode == 1) {
+			System.out.println("[ Estrategia simple... ]");
 			ciudad.initEstrategiaSimple();
 		} else {
+			System.out.println("[ Estrategia elaborada... ]");
 			ciudad.initEstrategiaElaborada();
 		}
 
-		System.out.println("[ Llamada a clases AIMA ]");
+		System.out.println("[ AIMA search ]");
 
 		// AIMA search
 		if (saHc == 1) {
@@ -88,7 +88,8 @@ public class Principal {
 			System.out.println("Time: " + ((long) (end - start) / 1000.0) + "s");
 
 			// System.out.println(search.getGoalState());
-			// printInstrumentation(agent.getInstrumentation());
+			System.out.println("[ Instrumentation ]");
+			printInstrumentation(agent.getInstrumentation());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -114,7 +115,8 @@ public class Principal {
 			System.out.println("Time: " + ((long) (end - start) / 1000.0) + "s");
 
 			// System.out.println(search.getGoalState());
-			// printInstrumentation(agent.getInstrumentation());
+			System.out.println("[ Instrumentation ]");
+			printInstrumentation(agent.getInstrumentation());
 
 		} catch (Exception e) {
 			e.printStackTrace();

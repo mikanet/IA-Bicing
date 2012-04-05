@@ -35,20 +35,20 @@ public class BicingSuccessorFunctionHC implements SuccessorFunction {
 
 										// Por cada bicicleta en la paradaUno
 										for (int bcParadaUno = 1; bcParadaUno <= bcOrigen; bcParadaUno++) {
-											// Si hay parada dos
+											String move = "";
+
 											if (paradaDos == -1) {
 												// No hay parada dos
-
+												move = "add(" + origen + "," + bcOrigen + "," + paradaUno + "," + bcParadaUno + "," + "-1,-1)";
 												Ciudad nuevaCiudad = new Ciudad(estCiudad);
 												nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcParadaUno, -1, -1);
-												result.add(new Successor("", nuevaCiudad));
-
+												result.add(new Successor(move, nuevaCiudad));
 											} else {
 												// Hay parada dos
+												move = "add(" + origen + "," + bcOrigen + "," + paradaUno + "," + bcParadaUno + "," + paradaDos + "," + (bcOrigen - bcParadaUno) + ")";
 												Ciudad nuevaCiudad = new Ciudad(estCiudad);
 												nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, bcOrigen - bcParadaUno);
-												result.add(new Successor("", nuevaCiudad));
-
+												result.add(new Successor(move, nuevaCiudad));
 											}
 										}
 
@@ -67,7 +67,9 @@ public class BicingSuccessorFunctionHC implements SuccessorFunction {
 
 			Ciudad nuevaCiudad = new Ciudad(estCiudad);
 			nuevaCiudad.delTransporte(t);
-			result.add(new Successor("", nuevaCiudad));
+			String move = "";
+			move = "del(" + t + ")";
+			result.add(new Successor(move, nuevaCiudad));
 
 		}
 
