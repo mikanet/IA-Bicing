@@ -35,9 +35,12 @@ public class Principal {
 	public static final Random random = new Random();
 
 	public static void main(String[] args) {
+		System.out.println("[ IA-2012, Bicing ]");
 
-		// Read data from user
-		readDataFromUser();
+		// Read data
+
+		readFixedData();
+		// readDataFromUser();
 
 		System.out.println("[ Init ciudad... ]");
 
@@ -61,9 +64,6 @@ public class Principal {
 		} else {
 			hillClimbingSearch(ciudad, heur);
 		}
-
-		// ciudad.printTransportes();
-		// ciudad.printEstaciones();
 
 		System.out.println("[ END ]");
 		System.exit(0);
@@ -136,7 +136,6 @@ public class Principal {
 
 	public static void readDataFromUser() {
 		// Read data from user
-		System.out.println("[ IA-2012, Bicing ]");
 
 		try {
 
@@ -174,6 +173,37 @@ public class Principal {
 
 		// Set random seed
 		random.setSeed(SEED);
+	}
+
+	private static void readFixedData() {
+		// Harcoded data
+
+		SEED = 678652;
+		ESTACIONES = 25;
+		BICICLETAS = 1250;
+		FURGONETAS = 5;
+		DEMANDA = 1;
+
+		// Estrategia simple(1), elaborada(2)
+		initMode = 1;
+
+		// SA(1), HC(2)
+		saHc = 2;
+
+		// Heur Max Distribucion(1), Max Beneficios(2): ");
+		// (1) Maximizacion de lo que obtenemos por los traslados de las bc
+		// (2): (1) + Minimizacion de los costes de transporte de las bicicletas
+		heur = 1;
+
+		// Simulated anealing
+		SAIterations = 0;
+		SAIterationsPerStep = 0;
+		SAK = 0;
+		SALambda = 0;
+
+		// Set random seed
+		random.setSeed(SEED);
+
 	}
 
 }
