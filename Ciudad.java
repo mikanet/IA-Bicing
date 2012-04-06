@@ -406,4 +406,21 @@ public class Ciudad {
 
 	}
 
+	public String toString() {
+		String result = "";
+
+		double beneficios = (double) Math.round(getBeneficios() * 100000) / 100000;
+		double gastos = (double) Math.round(getGastos() * 100000) / 100000;
+
+		result = result + "-----------------------\n";
+		result = result + "Beneficios: ";
+		result = result + beneficios;
+		result = result + "\nGastos: ";
+		result = result + gastos;
+		result = result + "\nBalance: ";
+		result = result + (double) Math.round((beneficios - gastos) * 100000) / 100000;
+		result = result + "\n-----------------------\n";
+
+		return result;
+	}
 }

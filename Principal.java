@@ -84,13 +84,12 @@ public class Principal {
 			SearchAgent agent = new SearchAgent(problem, search);
 			long end = System.currentTimeMillis();
 
-			// System.out.println("Iterations: " +
-			// search.getMetrics().getInt("Iterations"));
-
-			// System.out.println(search.getGoalState());
 			System.out.println("[ Instrumentation ]");
 			printInstrumentation(agent.getInstrumentation());
 			System.out.println("Time: " + ((long) (end - start) / 1000.0) + "s");
+
+			// Estado final
+			System.out.println(search.getGoalState());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -112,13 +111,12 @@ public class Principal {
 			SearchAgent agent = new SearchAgent(problem, search);
 			long end = System.currentTimeMillis();
 
-			// System.out.println("Iterations: " +
-			// search.getMetrics().getInt("Iterations"));
-
-			// System.out.println(search.getGoalState());
 			System.out.println("[ Instrumentation ]");
 			printInstrumentation(agent.getInstrumentation());
 			System.out.println("Time: " + ((long) (end - start) / 1000.0) + "s");
+
+			// Estado final
+			System.out.println("[Goal state: " + search.getGoalState() + "]");
 
 		} catch (Exception e) {
 			e.printStackTrace();
