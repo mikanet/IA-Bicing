@@ -89,7 +89,11 @@ public class Ciudad {
 			transAux.setOrigen(st);
 
 			// Calculamos bicicletas de salida
-			aux = random.nextInt(estaciones.getStationDoNotMove(st));
+			if (estaciones.getStationDoNotMove(st) > 0)
+				aux = random.nextInt(estaciones.getStationDoNotMove(st));
+			else
+				aux = 0;
+
 			if (aux > 30) {
 				transAux.bcOrigen = 30;
 			} else {
@@ -113,7 +117,10 @@ public class Ciudad {
 					aux = random.nextInt(numEstaciones);
 				}
 				transAux.setParadaUno(aux);
-				transAux.setBcParadaUno(random.nextInt(transAux.bcOrigen));
+				if (transAux.bcOrigen > 0)
+					transAux.setBcParadaUno(random.nextInt(transAux.bcOrigen));
+				else
+					transAux.setBcParadaUno(0);
 
 				aux = random.nextInt(numEstaciones);
 				while (aux == transAux.getParadaUno() || aux == transAux.getOrigen()) {
@@ -156,15 +163,14 @@ public class Ciudad {
 			int notMove = estaciones.getStationDoNotMove(i);
 			int faltan = estaciones.getDemandNextHour(i) - estaciones.getStationNextState(i);
 
-			if (notMove > 0) {
+			if ((notMove > 0) && (faltan <= 0)) {
 				// limitamos el numero de bicicletas que cargaremos a 30
 				if (notMove > 30)
 					notMove = 30;
 
 				EstacionesCompare aux = new EstacionesCompare(i, notMove);
 				estAuxSobrantes.add(aux);
-			}
-			if (faltan > 0) {
+			} else if (faltan > 0) {
 				EstacionesCompare aux2 = new EstacionesCompare(i, faltan);
 				estAuxDemanda.add(aux2);
 			}
@@ -280,7 +286,7 @@ public class Ciudad {
 
 			// nos restan un euro por cada bici que se aleje de la demanda
 			if (t.getBcOrigen() > sobrantes) {
-				beneficios -= t.getBcOrigen() - sobrantes;
+				beneficios -= (t.getBcOrigen() - sobrantes);
 			}
 
 			int faltabanParadaUno = estaciones.getDemandNextHour(t.getParadaUno()) - estaciones.getStationNextState(t.getParadaUno());
