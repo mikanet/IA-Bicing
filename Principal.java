@@ -39,8 +39,8 @@ public class Principal {
 
 		// Read data
 
-		// readFixedData();
-		readDataFromUser();
+		readFixedData();
+		// readDataFromUser();
 
 		System.out.println("[ Init ciudad... ]");
 
@@ -176,14 +176,18 @@ public class Principal {
 	private static void readFixedData() {
 		// Harcoded data
 
-		SEED = 678652;
+		// SEED = 678652;
+		System.out.print("Seed: ");
+		SEED = Input.readInt();
 		ESTACIONES = 25;
 		BICICLETAS = 1250;
 		FURGONETAS = 5;
 		DEMANDA = 1;
+		System.out.print("Estrategia simple(1), elaborada(2): ");
+		initMode = Input.readInt();
 
 		// Estrategia simple(1), elaborada(2)
-		initMode = 2;
+		// initMode = 2;
 
 		// SA(1), HC(2)
 		saHc = 2;
@@ -191,7 +195,7 @@ public class Principal {
 		// Heur Max Distribucion(1), Max Beneficios(2): ");
 		// (1) Maximizacion de lo que obtenemos por los traslados de las bc
 		// (2): (1) + Minimizacion de los costes de transporte de las bicicletas
-		heur = 1;
+		heur = 2;
 
 		// Simulated anealing
 		SAIterations = 0;
