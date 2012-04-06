@@ -39,8 +39,8 @@ public class Principal {
 
 		// Read data
 
-		// readFixedData();
-		readDataFromUser();
+		readFixedData();
+		// readDataFromUser();
 
 		System.out.println("[ Init ciudad... ]");
 
