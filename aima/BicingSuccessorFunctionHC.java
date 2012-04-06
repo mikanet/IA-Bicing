@@ -126,13 +126,13 @@ public class BicingSuccessorFunctionHC implements SuccessorFunction {
 														// No hay parada dos
 														move = "mod(" + origen + "," + bcOrigen + "," + paradaUno + "," + bcParadaUno + "," + "-1,-1)";
 														Ciudad nuevaCiudad = new Ciudad(estCiudad);
-														nuevaCiudad.modificarTransporte(estCiudad.transportes.get(t).getOrigen(), origen, bcOrigen, paradaUno, bcParadaUno, -1, -1);
+														nuevaCiudad.modificarTransporte(t, origen, bcOrigen, paradaUno, bcParadaUno, -1, -1);
 														result.add(new Successor(move, nuevaCiudad));
 													} else {
 														// Hay parada dos
 														move = "mod(" + origen + "," + bcOrigen + "," + paradaUno + "," + bcParadaUno + "," + paradaDos + "," + (bcOrigen - bcParadaUno) + ")";
 														Ciudad nuevaCiudad = new Ciudad(estCiudad);
-														nuevaCiudad.modificarTransporte(estCiudad.transportes.get(t).getOrigen(), origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, bcOrigen - bcParadaUno);
+														nuevaCiudad.modificarTransporte(t, origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, bcOrigen - bcParadaUno);
 														result.add(new Successor(move, nuevaCiudad));
 													}
 												}

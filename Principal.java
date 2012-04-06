@@ -195,7 +195,7 @@ public class Principal {
 		// Heur Max Distribucion(1), Max Beneficios(2): ");
 		// (1) Maximizacion de lo que obtenemos por los traslados de las bc
 		// (2): (1) + Minimizacion de los costes de transporte de las bicicletas
-		heur = 2;
+		heur = 1;
 
 		// Simulated anealing
 		SAIterations = 0;

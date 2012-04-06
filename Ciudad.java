@@ -350,7 +350,7 @@ public class Ciudad {
 	}
 
 	public void modificarTransporte(int origen, int nuevoOrigen, int bcOrigen, int paradaUno, int bcParadaUno, int paradaDos, int bcParadaDos) {
-		Transporte transAux = this.transportes.get(getTransporteConEstacion(origen));
+		Transporte transAux = this.transportes.get(origen);
 		transAux.setOrigen(nuevoOrigen);
 		transAux.setBcOrigen(bcOrigen);
 		transAux.setParadaUno(paradaUno);
