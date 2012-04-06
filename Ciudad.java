@@ -137,12 +137,20 @@ public class Ciudad {
 	}
 
 	// ordena el vector v en orden descendente
-	public void ordena(Vector<EstacionesCompare> v) {
-		Collections.sort(v, new Comparator<Object>() {
-			public int compare(Object a, Object b) {
-				return (-(new Integer(((EstacionesCompare) a).getSobrantes())).compareTo(new Integer(((EstacionesCompare) b).getSobrantes())));
-			}
-		});
+	public void ordena(Vector<EstacionesCompare> v, boolean ganancia) {
+		if (ganancia == false) {
+			Collections.sort(v, new Comparator<Object>() {
+				public int compare(Object a, Object b) {
+					return (-(new Integer(((EstacionesCompare) a).getSobrantes())).compareTo(new Integer(((EstacionesCompare) b).getSobrantes())));
+				}
+			});
+		} else {
+			Collections.sort(v, new Comparator<Object>() {
+				public int compare(Object a, Object b) {
+					return (-(new Double(((EstacionesCompare) a).getGanancia())).compareTo(new Double(((EstacionesCompare) b).getGanancia())));
+				}
+			});
+		}
 	}
 
 	public void initEstrategiaElaborada() {
@@ -152,10 +160,6 @@ public class Ciudad {
 		// comprobando que no repetimos furgonetas por estacion y que una
 		// furgoneta no sale con mas bicicletas de las disponibles (las
 		// sobrantes)
-
-		// estAuxSobrantes es un vector ordenado segun las bicicletas sobrantes
-		// estAuxDemanda es un vector ordenado segun las bicicletas que faltaran
-		// para cubrir la demanda
 
 		Vector<EstacionesCompare> estAuxSobrantes = new Vector<EstacionesCompare>();
 		Vector<EstacionesCompare> estAuxDemanda = new Vector<EstacionesCompare>();
@@ -176,72 +180,54 @@ public class Ciudad {
 			}
 		}
 
-		ordena(estAuxSobrantes);
-		ordena(estAuxDemanda);
+		ordena(estAuxSobrantes, false);
 
-		// System.out.println("Do not move: ");
-		// for (int i = 0; i < estAuxSobrantes.size(); i++) {
-		// System.out.print(estAuxSobrantes.elementAt(i).getSobrantes() + ", ");
-		// }
-		//
-		// System.out.println("Faltan: ");
-		// for (int i = 0; i < estAuxDemanda.size(); i++) {
-		// System.out.print(estAuxDemanda.elementAt(i).getSobrantes() + ", ");
-		// }
-		//
-		// System.out.println("Furgonetas: " + numFurgonetas);
-
-		for (int i = 0; (i < numFurgonetas) && (estAuxSobrantes.size() > 0) && (estAuxDemanda.size() > 0); i++) {
-			// System.out.print("1 ");
+		for (int j = 0; ((j < numFurgonetas) && (estAuxSobrantes.size() > 0) && (estAuxDemanda.size() > 0)); j++) {
 			Transporte trans = new Transporte();
+
+			// Ordenamos el vector de demandas por la relacion
+			// bicicletas/distancia respecto al origen.
+			for (int k = 0; k < estAuxDemanda.size(); k++) {
+				EstacionesCompare e = estAuxDemanda.elementAt(k);
+				e.setGanancia((int) (e.getSobrantes() / estaciones.getStationsDistance(estAuxSobrantes.elementAt(0).origen, e.origen)));
+			}
+			ordena(estAuxDemanda, true);
+
 			EstacionesCompare estDem0 = estAuxDemanda.elementAt(0);
 			EstacionesCompare estSob0 = estAuxSobrantes.elementAt(0);
 
 			trans.setOrigen(estSob0.getOrigen());
 			trans.setParadaUno(estDem0.getOrigen());
-			int diferencia = estDem0.getSobrantes() - estSob0.getSobrantes();
-
-			// si la estacion necesitaba mas bicicletas de las que se pueden
-			// transportar, solo habra una parada con bcParadaUno = sobrantes
-			// de la parada origen.
-			if (diferencia > 0) {
-				trans.setBcParadaUno(estSob0.getSobrantes());
-				trans.setBcOrigen(estSob0.getSobrantes());
-
-				// actualizamos vector de demandas
-				estDem0.setSobrantes(estDem0.getSobrantes() - estSob0.getSobrantes());
-				if ((estAuxDemanda.size() > 1) && (estDem0.getSobrantes() < estAuxDemanda.elementAt(1).getSobrantes()))
-					ordena(estAuxDemanda);
-			}
-
-			// en caso contrario, habra dos paradas
-			else {
+			int dif = estSob0.getSobrantes() - estDem0.getSobrantes();
+			// Si disponemos de mas bicicletas de las que necesita la estacion
+			// habra dos paradas
+			if (dif > 0) {
 				trans.setBcParadaUno(estDem0.getSobrantes());
+				estSob0.setSobrantes(dif);
 				estAuxDemanda.remove(0);
-				estSob0.setSobrantes(estSob0.getSobrantes() - trans.getBcParadaUno());
-
 				if (estAuxDemanda.size() > 0) {
-					EstacionesCompare estDem1 = estAuxDemanda.elementAt(0);
-					trans.setParadaDos(estDem1.getOrigen());
-					if (estDem1.getSobrantes() > estSob0.getSobrantes()) {
-						trans.setBcParadaDos(estSob0.getSobrantes());
-						estDem1.setSobrantes(estDem1.getSobrantes() - trans.getBcParadaDos());
-						if ((estAuxDemanda.size() > 1) && (estDem1.getSobrantes() < estAuxDemanda.elementAt(1).getSobrantes()))
-							ordena(estAuxDemanda);
-					} else {
-						trans.setBcParadaDos(estDem1.getSobrantes());
+					estDem0 = estAuxDemanda.elementAt(0);
+					trans.setParadaDos(estDem0.getOrigen());
+					dif = estSob0.getSobrantes() - estDem0.getSobrantes();
+					if (dif > 0) {
+						trans.setBcParadaDos(estDem0.getSobrantes());
 						estAuxDemanda.remove(0);
+					} else {
+						trans.setBcParadaDos(estSob0.getSobrantes());
+						estDem0.setSobrantes(-dif);
 					}
+					trans.setBcOrigen(trans.getBcParadaUno() + trans.getBcParadaDos());
 				}
-				trans.setBcOrigen(trans.getBcParadaUno() + trans.getBcParadaDos());
+			}
+			// Sino, habra solo una parada
+			else {
+				trans.setBcParadaUno(estSob0.getSobrantes());
+				trans.setBcOrigen(trans.getBcParadaUno());
+				estDem0.setSobrantes(-dif);
 			}
 			estAuxSobrantes.remove(0);
 			transportes.add(trans);
 		}
-
-		// System.out.println("");
-		// printTransportes();
-
 	}
 
 	// Funcion auxiliar para calcular los beneficios de una parada

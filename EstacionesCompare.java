@@ -3,6 +3,7 @@ package bicing;
 public class EstacionesCompare {
 	int origen;
 	int sobrantes;
+	double ganancia;
 
 	public EstacionesCompare() {
 	}
@@ -26,5 +27,13 @@ public class EstacionesCompare {
 
 	public void setSobrantes(int sobrantes) {
 		this.sobrantes = sobrantes;
+	}
+
+	public void setGanancia(double ganancia) {
+		this.ganancia = ganancia;
+	}
+
+	public double getGanancia() {
+		return this.ganancia;
 	}
 }
