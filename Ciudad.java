@@ -136,8 +136,9 @@ public class Ciudad {
 
 	}
 
-	// ordena el vector v en orden descendente
 	public void ordena(Vector<EstacionesCompare> v, boolean ganancia) {
+		// ordena el vector v en orden descendente
+
 		if (ganancia == false) {
 			Collections.sort(v, new Comparator<Object>() {
 				public int compare(Object a, Object b) {
@@ -230,10 +231,10 @@ public class Ciudad {
 		}
 	}
 
-	// Funcion auxiliar para calcular los beneficios de una parada
-	// bc: bicicletas que lleva la furgoneta a esa estacion
-	// faltaban: bicicletas que faltaban para cubrir la demanda
 	private double calculaBeneficiosParada(int bc, int faltaban) {
+		// Funcion auxiliar para calcular los beneficios de una parada
+		// bc: bicicletas que lleva la furgoneta a esa estacion
+		// faltaban: bicicletas que faltaban para cubrir la demanda
 		double beneficios = 0.0;
 
 		// si no faltaba ninguna bicicleta, no nos pagan
