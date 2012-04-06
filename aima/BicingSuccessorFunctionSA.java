@@ -3,6 +3,7 @@ package bicing.aima;
 import java.util.List;
 import java.util.Vector;
 
+import aima.search.framework.HeuristicFunction;
 import aima.search.framework.Successor;
 import aima.search.framework.SuccessorFunction;
 import bicing.Ciudad;
@@ -13,9 +14,16 @@ public class BicingSuccessorFunctionSA implements SuccessorFunction {
 	public List<Successor> getSuccessors(Object aState) {
 		Vector<Successor> result = new Vector<Successor>();
 		Ciudad estCiudad = (Ciudad) aState;
+		HeuristicFunction heuristic;
+
+		// Heuristico elejido
+		if (Principal.heur == 1) {
+			heuristic = new Bicing_HF_maxDistribucion();
+		} else {
+			heuristic = new Bicing_HF_maxBeneficios();
+		}
 
 		// Aplicamos operadores al azar
-
 		do {
 			switch (Principal.random.nextInt(2)) {
 

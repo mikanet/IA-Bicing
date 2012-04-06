@@ -3,9 +3,11 @@ package bicing.aima;
 import java.util.List;
 import java.util.Vector;
 
+import aima.search.framework.HeuristicFunction;
 import aima.search.framework.Successor;
 import aima.search.framework.SuccessorFunction;
 import bicing.Ciudad;
+import bicing.Principal;
 
 public class BicingSuccessorFunctionHC implements SuccessorFunction {
 
@@ -13,6 +15,14 @@ public class BicingSuccessorFunctionHC implements SuccessorFunction {
 		Vector<Successor> result = new Vector<Successor>();
 		// Cast del objecto aState a ciudad
 		Ciudad estCiudad = (Ciudad) aState;
+		HeuristicFunction heuristic;
+
+		// Heuristico elejido
+		if (Principal.heur == 1) {
+			heuristic = new Bicing_HF_maxDistribucion();
+		} else {
+			heuristic = new Bicing_HF_maxBeneficios();
+		}
 
 		// Aplicamos operador addTransporte
 
