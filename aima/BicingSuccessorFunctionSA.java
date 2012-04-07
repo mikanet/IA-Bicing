@@ -14,56 +14,62 @@ public class BicingSuccessorFunctionSA implements SuccessorFunction {
 		Vector<Successor> result = new Vector<Successor>();
 		Ciudad estCiudad = (Ciudad) aState;
 
-		// Aplicamos operadores al azar (Caso a–adir y eliminar)
 		do {
-			switch (Principal.random.nextInt(2)) {
+			switch (Principal.random.nextInt(3)) {
 
 			case 0:
-				// Operador addTransporte
+				// -----------------------------------------------------------------------
+				// Aplicamos operador addTransporte
+				// -----------------------------------------------------------------------
 
-				// Si no tenemos ya todos los transportes colocados
+				// Si quedan furgonetas libres
 				if (estCiudad.transportes.size() < Ciudad.getNumFurgonetas()) {
 					// Elegimos ciudad origen
 					int origen = Principal.random.nextInt(Ciudad.estaciones.getNumStations());
 
-					// Si no habia una furgoneta en esa estacion, seguimos
-					if (!estCiudad.hayFurgonetaEnEstacion(origen)) {
+					// Si no habia una furgoneta en esa estacion y
+					// ndnm > y nh-ns > 0
+					if (!estCiudad.hayFurgonetaEnEstacion(origen) && (Ciudad.estaciones.getStationDoNotMove(origen) > 0) && ((Ciudad.estaciones.getDemandNextHour(origen) - Ciudad.estaciones.getStationNextState(origen)) > 0)) {
 
 						int bcOrigen = Principal.random.nextInt(Ciudad.estaciones.getStationDoNotMove(origen));
 						int paradaUno = Principal.random.nextInt(Ciudad.estaciones.getNumStations());
 
-						// Si la parada uno es diferente de la origen,
-						// seguimos
-						if (paradaUno != origen) {
-							int bcParadaUno = Principal.random.nextInt(bcOrigen);
+						// Capacidad furgoneta
+						if (bcOrigen <= 30) {
 
-							// Si nos sobran bicis, tendremos dos paradas
-							if (bcParadaUno < bcOrigen) {
-								int paradaDos = Principal.random.nextInt(Ciudad.estaciones.getNumStations());
-								if ((paradaDos != paradaUno) && (paradaDos != origen)) {
-									int bcParadaDos = bcOrigen - bcParadaUno;
-									Ciudad nuevaCiudad = new Ciudad(estCiudad);
-									nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, bcParadaDos);
-									result.add(new Successor("", nuevaCiudad));
+							// Si la parada uno es diferente de la origen,
+							// seguimos
+							if (paradaUno != origen) {
+								int bcParadaUno = Principal.random.nextInt(bcOrigen);
+
+								// Si nos sobran bicis, tendremos dos paradas
+								if (bcParadaUno < bcOrigen) {
+									int paradaDos = Principal.random.nextInt(Ciudad.estaciones.getNumStations());
+									if ((paradaDos != paradaUno) && (paradaDos != origen)) {
+										int bcParadaDos = bcOrigen - bcParadaUno;
+										Ciudad nuevaCiudad = new Ciudad(estCiudad);
+										nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, bcParadaDos);
+										result.add(new Successor("", nuevaCiudad));
+									}
+
+									// Si la parada dos coincide con alguna,
+									// dejamos
+									// todas las bicis en
+									// la parada uno y no tenemos parada dos
+									else {
+										Ciudad nuevaCiudad = new Ciudad(estCiudad);
+										nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcOrigen, -1, -1);
+										result.add(new Successor("", nuevaCiudad));
+									}
 								}
 
-								// Si la parada dos coincide con alguna,
-								// dejamos
-								// todas las bicis en
-								// la parada uno y no tenemos parada dos
+								// Si no nos sobran bicis, solo tendremos una
+								// parada
 								else {
 									Ciudad nuevaCiudad = new Ciudad(estCiudad);
-									nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcOrigen, -1, -1);
+									nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcParadaUno, -1, -1);
 									result.add(new Successor("", nuevaCiudad));
 								}
-							}
-
-							// Si no nos sobran bicis, solo tendremos una
-							// parada
-							else {
-								Ciudad nuevaCiudad = new Ciudad(estCiudad);
-								nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcParadaUno, -1, -1);
-								result.add(new Successor("", nuevaCiudad));
 							}
 						}
 
@@ -72,7 +78,23 @@ public class BicingSuccessorFunctionSA implements SuccessorFunction {
 				break;
 
 			case 1:
-				// Operador delTransporte
+				// -----------------------------------------------------------------------
+				// Aplicamos operador modTransporte
+				// -----------------------------------------------------------------------
+				// TODO modificar, elejir transporte random y modificar numero
+				// de bicicletas random
+				if (estCiudad.transportes.size() > 0) {
+					Ciudad nuevaCiudad = new Ciudad(estCiudad);
+					int t = Principal.random.nextInt(nuevaCiudad.transportes.size());
+					nuevaCiudad.delTransporte(t);
+					result.add(new Successor("", nuevaCiudad));
+				}
+				break;
+
+			case 2:
+				// -----------------------------------------------------------------------
+				// Aplicamos operador delTransporte
+				// -----------------------------------------------------------------------
 				if (estCiudad.transportes.size() > 0) {
 					Ciudad nuevaCiudad = new Ciudad(estCiudad);
 					int t = Principal.random.nextInt(nuevaCiudad.transportes.size());

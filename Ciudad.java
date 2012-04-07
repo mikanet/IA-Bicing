@@ -327,6 +327,17 @@ public class Ciudad {
 		return gastos;
 	}
 
+	public double getDistanciaTotalRecorrida() {
+		double dist = 0.0;
+		if (this.transportes.size() > 0) {
+			for (int t = 0; t < this.transportes.size(); t++) {
+				dist = dist + Ciudad.estaciones.getStationsDistance(this.transportes.get(t).getOrigen(), this.transportes.get(t).getParadaUno());
+				dist = dist + Ciudad.estaciones.getStationsDistance(this.transportes.get(t).getParadaUno(), this.transportes.get(t).getParadaDos());
+			}
+		}
+		return dist;
+	}
+
 	public static Integer getNumFurgonetas() {
 		return numFurgonetas;
 	}
