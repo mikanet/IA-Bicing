@@ -401,6 +401,7 @@ public class Ciudad {
 	}
 
 	public void printTransportes() {
+
 		System.out.println("Numero de transportes: " + transportes.size());
 		for (int i = 0; i < transportes.size(); i++) {
 			System.out.print("Transporte " + i);
@@ -417,25 +418,40 @@ public class Ciudad {
 
 	}
 
+	public String transportesToString() {
+		String result = "-------------------- Transportes(" + transportes.size() + ") ------------------------\n";
+
+		for (int i = 0; i < transportes.size(); i++) {
+			result = result + "t[" + i + "]";
+			result = result + "\t@origen:" + transportes.get(i).getOrigen() + "\t#" + transportes.get(i).getBcOrigen();
+			result = result + "\t@p1:" + transportes.get(i).getParadaUno() + "\t#" + transportes.get(i).getBcParadaUno();
+			result = result + "\t@p2:" + transportes.get(i).getParadaDos() + "\t#" + transportes.get(i).getBcParadaDos();
+			result = result + "\n";
+		}
+
+		result = result + "------------------------------------------------------------\n";
+
+		return result;
+	}
+
 	public String toString() {
 
-		System.out.println("Transportes:");
-		this.printTransportes();
-
-		String result = "";
+		String result = this.transportesToString();
+		result = result + "\n";
 
 		double beneficios = (double) Math.round(getBeneficios() * 100000) / 100000;
 		double gastos = (double) Math.round(getGastos() * 100000) / 100000;
 
 		result = result + "-----------------------\n";
-		result = result + "Beneficios: ";
+		result = result + " Beneficios: ";
 		result = result + beneficios;
-		result = result + "\nGastos: ";
+		result = result + "\n Gastos: ";
 		result = result + gastos;
-		result = result + "\nBalance: ";
+		result = result + "\n Balance: ";
 		result = result + (double) Math.round((beneficios - gastos) * 100000) / 100000;
 		result = result + "\n-----------------------\n";
 
 		return result;
 	}
+
 }

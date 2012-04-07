@@ -38,26 +38,21 @@ public class Principal {
 		System.out.println("[ IA-2012, Bicing ]");
 
 		// Read data
-
-		readFixedDataVero();
-		// readFixedDataMarti();
+		readFixedData();
 		// readDataFromUser();
-
-		System.out.println("[ Init ciudad... ]");
 
 		// State initialization
 		Ciudad ciudad = new Ciudad(ESTACIONES, BICICLETAS, FURGONETAS, DEMANDA, SEED, random);
 
 		// Initialization mode
 		if (initMode == 1) {
-			System.out.println("[ Estrategia simple... ]");
 			ciudad.initEstrategiaSimple();
 		} else {
-			System.out.println("[ Estrategia elaborada... ]");
 			ciudad.initEstrategiaElaborada();
 		}
 
 		// Mostrar estado inicial
+		System.out.println();
 		System.out.println(ciudad);
 
 		System.out.println("[ AIMA search ]");
@@ -88,9 +83,8 @@ public class Principal {
 			SearchAgent agent = new SearchAgent(problem, search);
 			long end = System.currentTimeMillis();
 
-			System.out.println("[ Instrumentation ]");
 			printInstrumentation(agent.getInstrumentation());
-			System.out.println("Time: " + ((long) (end - start) / 1000.0) + "s");
+			System.out.println("[ Time: " + ((long) (end - start) / 1000.0) + "s ]");
 
 			System.out.println();
 
@@ -117,9 +111,8 @@ public class Principal {
 			SearchAgent agent = new SearchAgent(problem, search);
 			long end = System.currentTimeMillis();
 
-			System.out.println("[ Instrumentation ]");
 			printInstrumentation(agent.getInstrumentation());
-			System.out.println("Time: " + ((long) (end - start) / 1000.0) + "s");
+			System.out.println("[ Time: " + ((long) (end - start) / 1000.0) + "s ]");
 
 			System.out.println();
 
@@ -132,6 +125,7 @@ public class Principal {
 	}
 
 	private static void printInstrumentation(Properties properties) {
+		System.out.println("[ Instrumentation ]");
 		Iterator<Object> keys = properties.keySet().iterator();
 		while (keys.hasNext()) {
 			String key = (String) keys.next();
@@ -181,8 +175,7 @@ public class Principal {
 		random.setSeed(SEED);
 	}
 
-	@SuppressWarnings("unused")
-	private static void readFixedDataVero() {
+	private static void readFixedData() {
 		// Harcoded data
 
 		// SEED = 678652;
@@ -197,37 +190,6 @@ public class Principal {
 
 		// Estrategia simple(1), elaborada(2)
 		// initMode = 2;
-
-		// SA(1), HC(2)
-		saHc = 2;
-
-		// Heur Max Distribucion(1), Max Beneficios(2): ");
-		// (1) Maximizacion de lo que obtenemos por los traslados de las bc
-		// (2): (1) + Minimizacion de los costes de transporte de las bicicletas
-		heur = 1;
-
-		// Simulated anealing
-		SAIterations = 0;
-		SAIterationsPerStep = 0;
-		SAK = 0;
-		SALambda = 0;
-
-		// Set random seed
-		random.setSeed(SEED);
-
-	}
-
-	private static void readFixedDataMarti() {
-		// Harcoded data
-
-		SEED = 384765;
-		ESTACIONES = 25;
-		BICICLETAS = 1250;
-		FURGONETAS = 5;
-		DEMANDA = 1;
-
-		// Estrategia simple(1), elaborada(2)
-		initMode = 2;
 
 		// SA(1), HC(2)
 		saHc = 2;
