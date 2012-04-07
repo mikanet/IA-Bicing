@@ -10,7 +10,7 @@ import aima.search.framework.SearchAgent;
 import aima.search.informed.HillClimbingSearch;
 import aima.search.informed.SimulatedAnnealingSearch;
 import bicing.aima.BicingGoalTest;
-import bicing.aima.BicingSuccessorFunctionHC;
+import bicing.aima.BicingSuccessorFunctionHC_Conj1;
 import bicing.aima.BicingSuccessorFunctionSA;
 import bicing.aima.Bicing_HF_maxBeneficios;
 import bicing.aima.Bicing_HF_maxDistribucion;
@@ -77,9 +77,9 @@ public class Principal {
 
 			Problem problem = null;
 			if (heur == 1) {
-				problem = new Problem(ciudad, new BicingSuccessorFunctionHC(), new BicingGoalTest(), new Bicing_HF_maxDistribucion());
+				problem = new Problem(ciudad, new BicingSuccessorFunctionHC_Conj1(), new BicingGoalTest(), new Bicing_HF_maxDistribucion());
 			} else if (heur == 2) {
-				problem = new Problem(ciudad, new BicingSuccessorFunctionHC(), new BicingGoalTest(), new Bicing_HF_maxBeneficios());
+				problem = new Problem(ciudad, new BicingSuccessorFunctionHC_Conj1(), new BicingGoalTest(), new Bicing_HF_maxBeneficios());
 			}
 			Search search = new HillClimbingSearch();
 			SearchAgent agent = new SearchAgent(problem, search);
@@ -174,6 +174,7 @@ public class Principal {
 		random.setSeed(SEED);
 	}
 
+	@SuppressWarnings("unused")
 	private static void readFixedDataVero() {
 		// Harcoded data
 
