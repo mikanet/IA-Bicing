@@ -96,6 +96,7 @@ public class Ciudad {
 			estacionOcupada.add(st);
 
 			// st = estacion de donde sale la furgoneta
+			this.estacionesOcupadas.set(st, true);
 			transAux = new Transporte();
 
 			transAux.setOrigen(st);
@@ -145,7 +146,10 @@ public class Ciudad {
 			}
 			transportes.add(transAux);
 		}
-
+		System.out.println("Transportes iniciales: ");
+		this.printTransportes();
+		double ben = getBeneficios();
+		System.out.println("Ganancias solucion inicial: " + ben);
 	}
 
 	public void ordena(Vector<EstacionesCompare> v, boolean ganancia) {
@@ -237,10 +241,14 @@ public class Ciudad {
 				trans.setBcParadaUno(estSob0.getSobrantes());
 				trans.setBcOrigen(trans.getBcParadaUno());
 				estDem0.setSobrantes(-dif);
+				if (dif == 0)
+					estAuxDemanda.remove(0);
 			}
 			estAuxSobrantes.remove(0);
 			transportes.add(trans);
 		}
+		System.out.println("Transportes iniciales: ");
+		this.printTransportes();
 	}
 
 	private double calculaBeneficiosParada(int bc, int faltaban) {
@@ -400,10 +408,12 @@ public class Ciudad {
 		System.out.println("Numero de transportes: " + transportes.size());
 		for (int i = 0; i < transportes.size(); i++) {
 			System.out.print("Transporte " + i);
-			System.out.print(", STorigen: " + transportes.get(i).getOrigen());
-			System.out.print(", BCorigen: " + transportes.get(i).getBcOrigen());
-			System.out.print(", STuno: " + transportes.get(i).getParadaUno());
-			System.out.print(", BCuno: " + transportes.get(i).getBcParadaUno());
+			System.out.print(", Origen: " + transportes.get(i).getOrigen());
+			System.out.print(", BC origen: " + transportes.get(i).getBcOrigen());
+			System.out.print("  ---  ");
+			System.out.print(", ST uno: " + transportes.get(i).getParadaUno());
+			System.out.print(", BC uno: " + transportes.get(i).getBcParadaUno());
+			System.out.print("  ---  ");
 			System.out.print(", STdos: " + transportes.get(i).getParadaDos());
 			System.out.print(", BCdos: " + transportes.get(i).getBcParadaDos());
 			System.out.println();
@@ -425,6 +435,8 @@ public class Ciudad {
 		result = result + "\nBalance: ";
 		result = result + (double) Math.round((beneficios - gastos) * 100000) / 100000;
 		result = result + "\n-----------------------\n";
+		System.out.println("Transportes:");
+		this.printTransportes();
 
 		return result;
 	}
