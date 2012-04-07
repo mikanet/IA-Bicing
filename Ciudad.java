@@ -40,12 +40,24 @@ public class Ciudad {
 
 		// Copiamos los transportes
 		for (int i = 0; i < ciudadOriginal.transportes.size(); i++) {
-			transportes.add(ciudadOriginal.transportes.get(i));
+
+			Transporte aux = new Transporte();
+			aux.setOrigen(ciudadOriginal.transportes.get(i).getOrigen());
+			aux.setBcOrigen(ciudadOriginal.transportes.get(i).getBcOrigen());
+			aux.setParadaUno(ciudadOriginal.transportes.get(i).getParadaUno());
+			aux.setBcParadaUno(ciudadOriginal.transportes.get(i).getBcParadaUno());
+			aux.setParadaDos(ciudadOriginal.transportes.get(i).getParadaDos());
+			aux.setBcParadaDos(ciudadOriginal.transportes.get(i).getBcParadaDos());
+			transportes.add(aux);
 		}
 
 		// Copiamos las estaciones ocupadas
 		for (int i = 0; i < ciudadOriginal.estacionesOcupadas.size(); i++) {
-			estacionesOcupadas.add(ciudadOriginal.estacionesOcupadas.get(i));
+			if (ciudadOriginal.estacionesOcupadas.get(i)) {
+				estacionesOcupadas.add(new Boolean(true));
+			} else {
+				estacionesOcupadas.add(new Boolean(false));
+			}
 		}
 
 	}

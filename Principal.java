@@ -39,7 +39,8 @@ public class Principal {
 
 		// Read data
 
-		readFixedData();
+		readFixedDataVero();
+		// readFixedDataMarti();
 		// readDataFromUser();
 
 		System.out.println("[ Init ciudad... ]");
@@ -173,7 +174,7 @@ public class Principal {
 		random.setSeed(SEED);
 	}
 
-	private static void readFixedData() {
+	private static void readFixedDataVero() {
 		// Harcoded data
 
 		// SEED = 678652;
@@ -188,6 +189,37 @@ public class Principal {
 
 		// Estrategia simple(1), elaborada(2)
 		// initMode = 2;
+
+		// SA(1), HC(2)
+		saHc = 2;
+
+		// Heur Max Distribucion(1), Max Beneficios(2): ");
+		// (1) Maximizacion de lo que obtenemos por los traslados de las bc
+		// (2): (1) + Minimizacion de los costes de transporte de las bicicletas
+		heur = 1;
+
+		// Simulated anealing
+		SAIterations = 0;
+		SAIterationsPerStep = 0;
+		SAK = 0;
+		SALambda = 0;
+
+		// Set random seed
+		random.setSeed(SEED);
+
+	}
+
+	private static void readFixedDataMarti() {
+		// Harcoded data
+
+		SEED = 678652;
+		ESTACIONES = 25;
+		BICICLETAS = 1250;
+		FURGONETAS = 5;
+		DEMANDA = 1;
+
+		// Estrategia simple(1), elaborada(2)
+		initMode = 2;
 
 		// SA(1), HC(2)
 		saHc = 2;
