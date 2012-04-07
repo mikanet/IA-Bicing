@@ -10,7 +10,7 @@ import aima.search.framework.SearchAgent;
 import aima.search.informed.HillClimbingSearch;
 import aima.search.informed.SimulatedAnnealingSearch;
 import bicing.aima.BicingGoalTest;
-import bicing.aima.BicingSuccessorFunctionHC_Conj1;
+import bicing.aima.BicingSuccessorFunctionHC_Conj2;
 import bicing.aima.BicingSuccessorFunctionSA;
 import bicing.aima.Bicing_HF_maxBeneficios;
 import bicing.aima.Bicing_HF_maxDistribucion;
@@ -57,6 +57,9 @@ public class Principal {
 			ciudad.initEstrategiaElaborada();
 		}
 
+		// Mostrar estado inicial
+		System.out.println(ciudad);
+
 		System.out.println("[ AIMA search ]");
 
 		// AIMA search
@@ -77,9 +80,9 @@ public class Principal {
 
 			Problem problem = null;
 			if (heur == 1) {
-				problem = new Problem(ciudad, new BicingSuccessorFunctionHC_Conj1(), new BicingGoalTest(), new Bicing_HF_maxDistribucion());
+				problem = new Problem(ciudad, new BicingSuccessorFunctionHC_Conj2(), new BicingGoalTest(), new Bicing_HF_maxDistribucion());
 			} else if (heur == 2) {
-				problem = new Problem(ciudad, new BicingSuccessorFunctionHC_Conj1(), new BicingGoalTest(), new Bicing_HF_maxBeneficios());
+				problem = new Problem(ciudad, new BicingSuccessorFunctionHC_Conj2(), new BicingGoalTest(), new Bicing_HF_maxBeneficios());
 			}
 			Search search = new HillClimbingSearch();
 			SearchAgent agent = new SearchAgent(problem, search);
@@ -88,6 +91,8 @@ public class Principal {
 			System.out.println("[ Instrumentation ]");
 			printInstrumentation(agent.getInstrumentation());
 			System.out.println("Time: " + ((long) (end - start) / 1000.0) + "s");
+
+			System.out.println();
 
 			// Estado final
 			System.out.println(search.getGoalState());
@@ -115,6 +120,8 @@ public class Principal {
 			System.out.println("[ Instrumentation ]");
 			printInstrumentation(agent.getInstrumentation());
 			System.out.println("Time: " + ((long) (end - start) / 1000.0) + "s");
+
+			System.out.println();
 
 			// Estado final
 			System.out.println("[Goal state: " + search.getGoalState() + "]");
@@ -213,7 +220,7 @@ public class Principal {
 	private static void readFixedDataMarti() {
 		// Harcoded data
 
-		SEED = 678652;
+		SEED = 384765;
 		ESTACIONES = 25;
 		BICICLETAS = 1250;
 		FURGONETAS = 5;

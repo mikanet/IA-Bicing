@@ -146,10 +146,7 @@ public class Ciudad {
 			}
 			transportes.add(transAux);
 		}
-		System.out.println("Transportes iniciales: ");
-		this.printTransportes();
-		double ben = getBeneficios();
-		System.out.println("Ganancias solucion inicial: " + ben);
+
 	}
 
 	public void ordena(Vector<EstacionesCompare> v, boolean ganancia) {
@@ -247,8 +244,7 @@ public class Ciudad {
 			estAuxSobrantes.remove(0);
 			transportes.add(trans);
 		}
-		System.out.println("Transportes iniciales: ");
-		this.printTransportes();
+
 	}
 
 	private double calculaBeneficiosParada(int bc, int faltaban) {
@@ -323,7 +319,7 @@ public class Ciudad {
 				gastos = gastos + (((transportes.get(i).getBcOrigen() / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getOrigen(), transportes.get(i).getParadaUno()));
 
 				// Gastos estacion uno estacion dos
-				if (transportes.get(i).getParadaDos() != -1)
+				if (transportes.get(i).getBcParadaDos() > 0)
 					gastos = gastos + ((((transportes.get(i).getBcOrigen() - transportes.get(i).getBcParadaUno()) / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getParadaUno(), transportes.get(i).getParadaDos()));
 			}
 		}
@@ -369,7 +365,7 @@ public class Ciudad {
 		this.estacionesOcupadas.set(origen, true);
 	}
 
-	public void modificarTransporte(int origen, int nuevoOrigen, int bcOrigen, int paradaUno, int bcParadaUno, int paradaDos, int bcParadaDos) {
+	public void modTransporte(int origen, int nuevoOrigen, int bcOrigen, int paradaUno, int bcParadaUno, int paradaDos, int bcParadaDos) {
 		Transporte transAux = this.transportes.get(origen);
 		transAux.setOrigen(nuevoOrigen);
 		transAux.setBcOrigen(bcOrigen);
@@ -422,6 +418,10 @@ public class Ciudad {
 	}
 
 	public String toString() {
+
+		System.out.println("Transportes:");
+		this.printTransportes();
+
 		String result = "";
 
 		double beneficios = (double) Math.round(getBeneficios() * 100000) / 100000;
@@ -435,8 +435,6 @@ public class Ciudad {
 		result = result + "\nBalance: ";
 		result = result + (double) Math.round((beneficios - gastos) * 100000) / 100000;
 		result = result + "\n-----------------------\n";
-		System.out.println("Transportes:");
-		this.printTransportes();
 
 		return result;
 	}

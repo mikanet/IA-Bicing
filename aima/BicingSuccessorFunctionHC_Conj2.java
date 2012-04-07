@@ -20,30 +20,44 @@ public class BicingSuccessorFunctionHC_Conj2 implements SuccessorFunction {
 		// Aplicamos operador addTransporte
 		// -----------------------------------------------------------------------
 
-		// Anadimos el primer transporte que se pueda, senzillo, una parada
+		// Por cada furgoneta disponible
 		for (int t = 0; t < Ciudad.getNumFurgonetas() - estCiudad.transportes.size(); t++) {
-			// Buscamos el primer origen valido
+			// Por cada origen
 			for (int origen = 0; origen < Ciudad.estaciones.getNumStations(); origen++) {
-				if (!estCiudad.hayFurgonetaEnEstacion(origen)) {
-					// Buscamos la primera parada
+				// Si no furgoneta y dnm > 0 y nh - ns > 0
+				if (!estCiudad.hayFurgonetaEnEstacion(origen) && (Ciudad.estaciones.getStationDoNotMove(origen) > 0) && ((Ciudad.estaciones.getDemandNextHour(origen) - Ciudad.estaciones.getStationNextState(origen)) > 0)) {
+					// Por cada parada 1
 					for (int paradaUno = 0; paradaUno < Ciudad.estaciones.getNumStations(); paradaUno++) {
-						// Comprovamos que no sea el origen
+						// Si no origen
 						if (paradaUno != origen) {
-							// Cogemos todas las bicicletas possibles
-							if (Ciudad.estaciones.getStationDoNotMove(origen) > 0) {
-								int bcOrigen = Ciudad.estaciones.getStationDoNotMove(origen);
-								int bcParadaUno = bcOrigen;
+							// Por cada parada 2
+							for (int paradaDos = -1; paradaDos < Ciudad.estaciones.getNumStations(); paradaDos++) {
+								// Si paradaDos != de origen y paradaUno
+								if ((paradaDos != origen) && (paradaDos != paradaUno)) {
 
-								// No hay parada dos
-								String move = "add(" + origen + "," + bcOrigen + "," + paradaUno + "," + bcParadaUno + "," + "-1,-1)";
-								Ciudad nuevaCiudad = new Ciudad(estCiudad);
-								nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcParadaUno, -1, -1);
-								result.add(new Successor("", nuevaCiudad));
+									// Repartimos bicicletas
+									int bcOrigen = Ciudad.estaciones.getStationDoNotMove(origen);
+									int bcParadaUno = bcOrigen;
+									int bcParadaDos;
 
-								// Forzamos salir del for de origen y parada uno
-								origen = Ciudad.estaciones.getNumStations() + 1000;
-								paradaUno = Ciudad.estaciones.getNumStations() + 1000;
+									if (paradaDos != -1) {
+										// Miramos si son pares
+										if (bcOrigen % 2 == 0) {
+											bcParadaUno = bcOrigen / 2;
+											bcParadaDos = bcOrigen / 2;
+										} else {
+											bcParadaDos = bcOrigen / 2;
+											bcParadaUno = bcOrigen - paradaDos;
+										}
+									} else {
+										bcParadaDos = -1;
+									}
 
+									Ciudad nuevaCiudad = new Ciudad(estCiudad);
+									nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, bcParadaDos);
+									result.add(new Successor("", nuevaCiudad));
+
+								}
 							}
 						}
 					}
@@ -56,61 +70,52 @@ public class BicingSuccessorFunctionHC_Conj2 implements SuccessorFunction {
 		// Aplicamos el operador modificarTransporte
 		// -----------------------------------------------------------------------
 
-		// Por cada posible possible transporte
+		int origen, paradaUno, paradaDos;
+
+		// Por cada transporte
 		for (int t = 0; t < estCiudad.transportes.size(); t++) {
-			// Por cada posible origen
-			for (int origen = 0; origen < Ciudad.estaciones.getNumStations(); origen++) {
-				// Si no furgoneta origen, do not move >=1
-				if (!estCiudad.hayFurgonetaEnEstacion(origen) && (Ciudad.estaciones.getStationDoNotMove(origen) >= 1)) {
-					// Por cada possible parada uno
-					for (int paradaUno = 0; paradaUno < Ciudad.estaciones.getNumStations(); paradaUno++) {
-						// Si parada uno != origen
-						if (paradaUno != origen) {
-							// Por cada possible parada dos
-							for (int paradaDos = -1; paradaDos < Ciudad.estaciones.getNumStations(); paradaDos++) {
-								// Si parada dos != de parada uno y
-								// origen
-								if (paradaDos != paradaUno && paradaDos != origen) {
-									// Por cada posible bicicleta en el origen
-									for (int bcOrigen = 1; bcOrigen < Ciudad.estaciones.getStationDoNotMove(origen); bcOrigen++) {
+			origen = estCiudad.transportes.get(t).getOrigen();
+			paradaUno = estCiudad.transportes.get(t).getParadaUno();
+			paradaDos = estCiudad.transportes.get(t).getBcParadaDos();
+			int bcParadaUno;
 
-										// Por cada bicicleta en paradaUno
-										for (int bcParadaUno = 1; bcParadaUno <= bcOrigen; bcParadaUno++) {
+			// Por cada bicicleta en el origen
+			for (int bcOrigen = 1; bcOrigen <= Ciudad.estaciones.getStationDoNotMove(origen); bcOrigen++) {
+				// Capacidad furgoneta
+				if (bcOrigen <= 30) {
 
-											String move = "";
-											if (paradaDos == -1) {
-												// No hay parada dos
-												move = "mod(" + origen + "," + bcOrigen + "," + paradaUno + "," + bcParadaUno + "," + "-1,-1)";
-												Ciudad nuevaCiudad = new Ciudad(estCiudad);
-												nuevaCiudad.modificarTransporte(t, origen, bcOrigen, paradaUno, bcParadaUno, -1, -1);
-												result.add(new Successor("", nuevaCiudad));
-											} else {
-												// Hay parada dos
-												move = "mod(" + origen + "," + bcOrigen + "," + paradaUno + "," + bcParadaUno + "," + paradaDos + "," + (bcOrigen - bcParadaUno) + ")";
-												Ciudad nuevaCiudad = new Ciudad(estCiudad);
-												nuevaCiudad.modificarTransporte(t, origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, bcOrigen - bcParadaUno);
-												result.add(new Successor("", nuevaCiudad));
-											}
-										}
+					// Hay paradaDos
+					if (paradaDos != -1) {
+						// Por cada bcParadaUno
+						for (bcParadaUno = 1; bcParadaUno < bcOrigen; bcParadaUno++) {
 
-									}
-								}
-							}
+							Ciudad nuevaCiudad = new Ciudad(estCiudad);
+							nuevaCiudad.modTransporte(t, origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, (bcOrigen - bcParadaUno));
+							result.add(new Successor("", nuevaCiudad));
 						}
+
+					} else {
+						bcParadaUno = bcOrigen;
+
+						Ciudad nuevaCiudad = new Ciudad(estCiudad);
+						nuevaCiudad.modTransporte(t, origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, -1);
+						result.add(new Successor("", nuevaCiudad));
 					}
+
 				}
 			}
+
 		}
 
 		// -----------------------------------------------------------------------
 		// Aplicamos operador delTransporte
 		// -----------------------------------------------------------------------
-		for (int t = 0; t < estCiudad.transportes.size(); t++) {
 
+		// Por cada transporte
+		for (int t = 0; t < estCiudad.transportes.size(); t++) {
 			Ciudad nuevaCiudad = new Ciudad(estCiudad);
 			nuevaCiudad.delTransporte(t);
 			result.add(new Successor("", nuevaCiudad));
-
 		}
 
 		return result;
