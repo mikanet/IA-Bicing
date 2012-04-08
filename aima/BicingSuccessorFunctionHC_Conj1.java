@@ -76,12 +76,11 @@ public class BicingSuccessorFunctionHC_Conj1 implements SuccessorFunction {
 		// Aplicamos el operador modificarTransporte
 		// -----------------------------------------------------------------------
 
-		int origen, paradaUno, paradaDos;
+		int origen, paradaDos;
 
 		// Por cada transporte
 		for (int t = 0; t < estCiudad.transportes.size(); t++) {
 			origen = estCiudad.transportes.get(t).getOrigen();
-			paradaUno = estCiudad.transportes.get(t).getParadaUno();
 			paradaDos = estCiudad.transportes.get(t).getParadaDos();
 			int bcParadaUno;
 
@@ -96,7 +95,7 @@ public class BicingSuccessorFunctionHC_Conj1 implements SuccessorFunction {
 						for (bcParadaUno = 1; bcParadaUno < bcOrigen; bcParadaUno++) {
 
 							Ciudad nuevaCiudad = new Ciudad(estCiudad);
-							nuevaCiudad.modTransporte(t, origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, (bcOrigen - bcParadaUno));
+							nuevaCiudad.modTransporte(t, bcOrigen, bcParadaUno, (bcOrigen - bcParadaUno));
 							result.add(new Successor("", nuevaCiudad));
 						}
 
@@ -104,7 +103,7 @@ public class BicingSuccessorFunctionHC_Conj1 implements SuccessorFunction {
 						bcParadaUno = bcOrigen;
 
 						Ciudad nuevaCiudad = new Ciudad(estCiudad);
-						nuevaCiudad.modTransporte(t, origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, -1);
+						nuevaCiudad.modTransporte(t, bcOrigen, bcParadaUno, -1);
 						result.add(new Successor("", nuevaCiudad));
 					}
 

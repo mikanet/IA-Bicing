@@ -319,7 +319,7 @@ public class Ciudad {
 				gastos = gastos + (((transportes.get(i).getBcOrigen() / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getOrigen(), transportes.get(i).getParadaUno()));
 
 				// Gastos estacion uno estacion dos
-				if (transportes.get(i).getBcParadaDos() != -1)
+				if (transportes.get(i).getBcParadaDos() > 0)
 					gastos = gastos + ((((transportes.get(i).getBcOrigen() - transportes.get(i).getBcParadaUno()) / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getParadaUno(), transportes.get(i).getParadaDos()));
 			}
 		}
@@ -363,20 +363,12 @@ public class Ciudad {
 		this.estacionesOcupadas.set(origen, true);
 	}
 
-	public void modTransporte(int idTransporte, int nuevoOrigen, int bcOrigen, int paradaUno, int bcParadaUno, int paradaDos, int bcParadaDos) {
+	public void modTransporte(int idTransporte, int bcOrigen, int bcParadaUno, int bcParadaDos) {
 		Transporte transAux = this.transportes.get(idTransporte);
-		transAux.setOrigen(nuevoOrigen);
 		transAux.setBcOrigen(bcOrigen);
-		transAux.setParadaUno(paradaUno);
 		transAux.setBcParadaUno(bcParadaUno);
-		transAux.setParadaDos(paradaDos);
 		transAux.setBcParadaDos(bcParadaDos);
 
-		// Marcamos la nueva estacion como ocupada
-		if (idTransporte != nuevoOrigen) {
-			this.estacionesOcupadas.set(idTransporte, false);
-			this.estacionesOcupadas.set(nuevoOrigen, true);
-		}
 	}
 
 	public void delTransporte(int index) {

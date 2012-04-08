@@ -14,6 +14,8 @@ public class BicingSuccessorFunctionSA implements SuccessorFunction {
 		Vector<Successor> result = new Vector<Successor>();
 		Ciudad estCiudad = (Ciudad) aState;
 
+		int t;
+
 		do {
 			switch (Principal.random.nextInt(3)) {
 
@@ -81,14 +83,35 @@ public class BicingSuccessorFunctionSA implements SuccessorFunction {
 				// -----------------------------------------------------------------------
 				// Aplicamos operador modTransporte
 				// -----------------------------------------------------------------------
-				// TODO modificar, elejir transporte random y modificar numero
-				// de bicicletas random
-				if (estCiudad.transportes.size() > 0) {
+
+				// Elejimos el transporte
+				t = Principal.random.nextInt(estCiudad.transportes.size());
+				int origen = estCiudad.transportes.get(t).getOrigen();
+				int paradaDos = estCiudad.transportes.get(t).getParadaDos();
+
+				// Elejimos bc origen
+				int bcOrigen = Principal.random.nextInt(Ciudad.estaciones.getStationDoNotMove(origen));
+
+				// Limite furgoneta
+				if (bcOrigen > 30) {
+					bcOrigen = 30;
+				}
+
+				// Repartimos bicicletas
+				int bcParadaUno = Principal.random.nextInt(bcOrigen);
+				int bcParadaDos = bcOrigen - bcParadaUno;
+
+				// Hay paradaDos
+				if (paradaDos != -1) {
 					Ciudad nuevaCiudad = new Ciudad(estCiudad);
-					int t = Principal.random.nextInt(nuevaCiudad.transportes.size());
-					nuevaCiudad.delTransporte(t);
+					nuevaCiudad.modTransporte(t, bcOrigen, bcParadaUno, bcParadaDos);
+					result.add(new Successor("", nuevaCiudad));
+				} else {
+					Ciudad nuevaCiudad = new Ciudad(estCiudad);
+					nuevaCiudad.modTransporte(t, bcOrigen, bcOrigen, -1);
 					result.add(new Successor("", nuevaCiudad));
 				}
+
 				break;
 
 			case 2:
@@ -97,7 +120,7 @@ public class BicingSuccessorFunctionSA implements SuccessorFunction {
 				// -----------------------------------------------------------------------
 				if (estCiudad.transportes.size() > 0) {
 					Ciudad nuevaCiudad = new Ciudad(estCiudad);
-					int t = Principal.random.nextInt(nuevaCiudad.transportes.size());
+					t = Principal.random.nextInt(nuevaCiudad.transportes.size());
 					nuevaCiudad.delTransporte(t);
 					result.add(new Successor("", nuevaCiudad));
 				}

@@ -37,6 +37,7 @@ public class BicingSuccessorFunctionHC_Conj2 implements SuccessorFunction {
 									// Por cada posible bicicleta en el
 									// origen
 									for (int bcOrigen = 1; bcOrigen < Ciudad.estaciones.getStationDoNotMove(origen); bcOrigen++) {
+										// Limite de bicicletas
 										if (bcOrigen <= 30) {
 											// Por cada bicicleta en la
 											// paradaUno
