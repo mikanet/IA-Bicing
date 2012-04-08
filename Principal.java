@@ -35,7 +35,7 @@ public class Principal {
 	public static final Random random = new Random();
 
 	public static void main(String[] args) {
-		System.out.println("[ IA-2012, Bicing ]");
+		System.out.println("[ IA-2012, Bicing - Locura es hacer la misma cosa una y otra vez esperando obtener diferentes resultados (Albert Einstein)]");
 
 		// Read data
 		readFixedData();
@@ -179,14 +179,12 @@ public class Principal {
 
 	private static void readFixedData() {
 		// Harcoded data
-		// System.out.print("Seed: ");
-		// SEED = Input.readInt();
-		SEED = 14;
+		System.out.print("Seed: ");
+		SEED = Input.readInt();
 
 		ESTACIONES = 25;
 		BICICLETAS = 1250;
 		FURGONETAS = 5;
-
 		// Demanda equilibrada(0), hora punta(1)
 		DEMANDA = 0;
 
@@ -195,7 +193,7 @@ public class Principal {
 		initMode = 2;
 
 		// SA(1), HC(2)
-		saHc = 1;
+		saHc = 2;
 
 		// Heur Max Distribucion(1), Max Beneficios(2): ");
 		// (1) Maximizacion de lo que obtenemos por los traslados de las bc
@@ -204,10 +202,10 @@ public class Principal {
 
 		// Simulated anealing
 		if (saHc == 1) {
-			SAIterations = 5000;
-			SAIterationsPerStep = 20;
+			SAIterations = 1000;
+			SAIterationsPerStep = 5;
 			SAK = 1;
-			SALambda = 0.0001;
+			SALambda = 0.1;
 		}
 
 		// Set random seed
