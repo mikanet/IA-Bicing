@@ -76,7 +76,7 @@ public class BicingSuccessorFunctionHC_Conj1 implements SuccessorFunction {
 		for (int t = 0; t < estCiudad.transportes.size(); t++) {
 			origen = estCiudad.transportes.get(t).getOrigen();
 			paradaUno = estCiudad.transportes.get(t).getParadaUno();
-			paradaDos = estCiudad.transportes.get(t).getBcParadaDos();
+			paradaDos = estCiudad.transportes.get(t).getParadaDos();
 			int bcParadaUno;
 
 			// Por cada bicicleta en el origen
