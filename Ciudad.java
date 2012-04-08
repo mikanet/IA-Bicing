@@ -175,6 +175,105 @@ public class Ciudad {
 		// furgoneta no sale con mas bicicletas de las disponibles (las
 		// sobrantes)
 
+		// estAuxSobrantes es un vector ordenado segun las bicicletas sobrantes
+		// estAuxDemanda es un vector ordenado segun las bicicletas que faltaran
+		// para cubrir la demanda
+
+		Vector<EstacionesCompare> estAuxSobrantes = new Vector<EstacionesCompare>();
+		Vector<EstacionesCompare> estAuxDemanda = new Vector<EstacionesCompare>();
+		for (int i = 0; i < estaciones.getNumStations(); i++) {
+			int notMove = estaciones.getStationDoNotMove(i);
+			int faltan = estaciones.getDemandNextHour(i) - estaciones.getStationNextState(i);
+
+			if ((notMove > 0) && (faltan <= 0)) {
+				// limitamos el numero de bicicletas que cargaremos a 30
+				if (notMove > 30)
+					notMove = 30;
+
+				EstacionesCompare aux = new EstacionesCompare(i, notMove);
+				estAuxSobrantes.add(aux);
+			} else if (faltan > 0) {
+				EstacionesCompare aux2 = new EstacionesCompare(i, faltan);
+				estAuxDemanda.add(aux2);
+			}
+		}
+
+		ordena(estAuxSobrantes, false);
+		ordena(estAuxDemanda, false);
+
+		// System.out.println("Do not move: ");
+		// for (int i = 0; i < estAuxSobrantes.size(); i++) {
+		// System.out.print(estAuxSobrantes.elementAt(i).getSobrantes() + ", ");
+		// }
+		//
+		// System.out.println("Faltan: ");
+		// for (int i = 0; i < estAuxDemanda.size(); i++) {
+		// System.out.print(estAuxDemanda.elementAt(i).getSobrantes() + ", ");
+		// }
+		//
+		// System.out.println("Furgonetas: " + numFurgonetas);
+
+		for (int i = 0; (i < numFurgonetas) && (estAuxSobrantes.size() > 0) && (estAuxDemanda.size() > 0); i++) {
+			// System.out.print("1 ");
+			Transporte trans = new Transporte();
+			EstacionesCompare estDem0 = estAuxDemanda.elementAt(0);
+			EstacionesCompare estSob0 = estAuxSobrantes.elementAt(0);
+
+			trans.setOrigen(estSob0.getOrigen());
+			trans.setParadaUno(estDem0.getOrigen());
+			int diferencia = estDem0.getSobrantes() - estSob0.getSobrantes();
+
+			// si la estacion necesitaba mas bicicletas de las que se pueden
+			// transportar, solo habra una parada con bcParadaUno = sobrantes
+			// de la parada origen.
+			if (diferencia > 0) {
+				trans.setBcParadaUno(estSob0.getSobrantes());
+				trans.setBcOrigen(estSob0.getSobrantes());
+
+				// actualizamos vector de demandas
+				estDem0.setSobrantes(estDem0.getSobrantes() - estSob0.getSobrantes());
+				if ((estAuxDemanda.size() > 1) && (estDem0.getSobrantes() < estAuxDemanda.elementAt(1).getSobrantes()))
+					ordena(estAuxDemanda, false);
+			}
+
+			// en caso contrario, habra dos paradas
+			else {
+				trans.setBcParadaUno(estDem0.getSobrantes());
+				estAuxDemanda.remove(0);
+				estSob0.setSobrantes(estSob0.getSobrantes() - trans.getBcParadaUno());
+
+				if (estAuxDemanda.size() > 0) {
+					EstacionesCompare estDem1 = estAuxDemanda.elementAt(0);
+					trans.setParadaDos(estDem1.getOrigen());
+					if (estDem1.getSobrantes() > estSob0.getSobrantes()) {
+						trans.setBcParadaDos(estSob0.getSobrantes());
+						estDem1.setSobrantes(estDem1.getSobrantes() - trans.getBcParadaDos());
+						if ((estAuxDemanda.size() > 1) && (estDem1.getSobrantes() < estAuxDemanda.elementAt(1).getSobrantes()))
+							ordena(estAuxDemanda, false);
+					} else {
+						trans.setBcParadaDos(estDem1.getSobrantes());
+						estAuxDemanda.remove(0);
+					}
+				}
+				trans.setBcOrigen(trans.getBcParadaUno() + trans.getBcParadaDos());
+			}
+			estAuxSobrantes.remove(0);
+			transportes.add(trans);
+		}
+
+		// System.out.println("");
+		// printTransportes();
+
+	}
+
+	public void initEstrategiaMuyElaborada() {
+		// Estrategia elaborada para crear estado inicial
+		// Inicializamos f(o menos) transportes de forma que haya furgonetas
+		// en las estaciones con mayor numero de bicicletas sobrantes
+		// comprobando que no repetimos furgonetas por estacion y que una
+		// furgoneta no sale con mas bicicletas de las disponibles (las
+		// sobrantes)
+
 		Vector<EstacionesCompare> estAuxSobrantes = new Vector<EstacionesCompare>();
 		Vector<EstacionesCompare> estAuxDemanda = new Vector<EstacionesCompare>();
 		for (int i = 0; i < estaciones.getNumStations(); i++) {
@@ -426,8 +525,9 @@ public class Ciudad {
 
 	public String toString() {
 
-		String result = this.transportesToString();
-		result = result + "\n";
+		// String result = this.transportesToString();
+		// result = result + "\n";
+		String result = "";
 
 		double beneficios = (double) Math.round(getBeneficios() * 100000) / 100000;
 		double gastos = (double) Math.round(getGastos() * 100000) / 100000;
@@ -443,5 +543,4 @@ public class Ciudad {
 
 		return result;
 	}
-
 }

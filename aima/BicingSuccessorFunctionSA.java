@@ -38,39 +38,43 @@ public class BicingSuccessorFunctionSA implements SuccessorFunction {
 
 						// Capacidad furgoneta
 						if (bcOrigen <= 30) {
+							if (bcOrigen > 0) {
 
-							// Si la parada uno es diferente de la origen,
-							// seguimos
-							if (paradaUno != origen) {
-								int bcParadaUno = Principal.random.nextInt(bcOrigen);
+								// Si la parada uno es diferente de la origen,
+								// seguimos
+								if (paradaUno != origen) {
+									int bcParadaUno = Principal.random.nextInt(bcOrigen);
 
-								// Si nos sobran bicis, tendremos dos paradas
-								if (bcParadaUno < bcOrigen) {
-									int paradaDos = Principal.random.nextInt(Ciudad.estaciones.getNumStations());
-									if ((paradaDos != paradaUno) && (paradaDos != origen)) {
-										int bcParadaDos = bcOrigen - bcParadaUno;
-										Ciudad nuevaCiudad = new Ciudad(estCiudad);
-										nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, bcParadaDos);
-										result.add(new Successor("", nuevaCiudad));
+									// Si nos sobran bicis, tendremos dos
+									// paradas
+									if (bcParadaUno < bcOrigen) {
+										int paradaDos = Principal.random.nextInt(Ciudad.estaciones.getNumStations());
+										if ((paradaDos != paradaUno) && (paradaDos != origen)) {
+											int bcParadaDos = bcOrigen - bcParadaUno;
+											Ciudad nuevaCiudad = new Ciudad(estCiudad);
+											nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, bcParadaDos);
+											result.add(new Successor("", nuevaCiudad));
+										}
+
+										// Si la parada dos coincide con alguna,
+										// dejamos
+										// todas las bicis en
+										// la parada uno y no tenemos parada dos
+										else {
+											Ciudad nuevaCiudad = new Ciudad(estCiudad);
+											nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcOrigen, -1, -1);
+											result.add(new Successor("", nuevaCiudad));
+										}
 									}
 
-									// Si la parada dos coincide con alguna,
-									// dejamos
-									// todas las bicis en
-									// la parada uno y no tenemos parada dos
+									// Si no nos sobran bicis, solo tendremos
+									// una
+									// parada
 									else {
 										Ciudad nuevaCiudad = new Ciudad(estCiudad);
-										nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcOrigen, -1, -1);
+										nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcParadaUno, -1, -1);
 										result.add(new Successor("", nuevaCiudad));
 									}
-								}
-
-								// Si no nos sobran bicis, solo tendremos una
-								// parada
-								else {
-									Ciudad nuevaCiudad = new Ciudad(estCiudad);
-									nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcParadaUno, -1, -1);
-									result.add(new Successor("", nuevaCiudad));
 								}
 							}
 						}
@@ -84,32 +88,41 @@ public class BicingSuccessorFunctionSA implements SuccessorFunction {
 				// Aplicamos operador modTransporte
 				// -----------------------------------------------------------------------
 
-				// Elejimos el transporte
-				t = Principal.random.nextInt(estCiudad.transportes.size());
-				int origen = estCiudad.transportes.get(t).getOrigen();
-				int paradaDos = estCiudad.transportes.get(t).getParadaDos();
+				// Si hay transportes
+				if (estCiudad.transportes.size() > 0) {
 
-				// Elejimos bc origen
-				int bcOrigen = Principal.random.nextInt(Ciudad.estaciones.getStationDoNotMove(origen));
+					// Elegimos el transporte
+					t = Principal.random.nextInt(estCiudad.transportes.size());
+					int origen = estCiudad.transportes.get(t).getOrigen();
+					int paradaDos = estCiudad.transportes.get(t).getParadaDos();
 
-				// Limite furgoneta
-				if (bcOrigen > 30) {
-					bcOrigen = 30;
-				}
+					// Elegimos bc origen
+					int bcOrigen = Principal.random.nextInt(Ciudad.estaciones.getStationDoNotMove(origen));
 
-				// Repartimos bicicletas
-				int bcParadaUno = Principal.random.nextInt(bcOrigen);
-				int bcParadaDos = bcOrigen - bcParadaUno;
+					// Limite furgoneta
+					if (bcOrigen > 30) {
+						bcOrigen = 30;
+					}
 
-				// Hay paradaDos
-				if (paradaDos != -1) {
-					Ciudad nuevaCiudad = new Ciudad(estCiudad);
-					nuevaCiudad.modTransporte(t, bcOrigen, bcParadaUno, bcParadaDos);
-					result.add(new Successor("", nuevaCiudad));
-				} else {
-					Ciudad nuevaCiudad = new Ciudad(estCiudad);
-					nuevaCiudad.modTransporte(t, bcOrigen, bcOrigen, -1);
-					result.add(new Successor("", nuevaCiudad));
+					// No podemos coger 0 bicicletas
+					if (bcOrigen == 0) {
+						bcOrigen = 1;
+					}
+
+					// Repartimos bicicletas
+					int bcParadaUno = Principal.random.nextInt(bcOrigen);
+					int bcParadaDos = bcOrigen - bcParadaUno;
+
+					// Hay paradaDos
+					if (paradaDos != -1) {
+						Ciudad nuevaCiudad = new Ciudad(estCiudad);
+						nuevaCiudad.modTransporte(t, bcOrigen, bcParadaUno, bcParadaDos);
+						result.add(new Successor("", nuevaCiudad));
+					} else {
+						Ciudad nuevaCiudad = new Ciudad(estCiudad);
+						nuevaCiudad.modTransporte(t, bcOrigen, bcOrigen, -1);
+						result.add(new Successor("", nuevaCiudad));
+					}
 				}
 
 				break;

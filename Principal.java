@@ -30,7 +30,7 @@ public class Principal {
 	public static int SAIterations = 0;
 	public static int SAIterationsPerStep = 0;
 	public static int SAK = 0;
-	public static int SALambda = 0;
+	public static double SALambda = 0;
 
 	public static final Random random = new Random();
 
@@ -47,8 +47,10 @@ public class Principal {
 		// Initialization mode
 		if (initMode == 1) {
 			ciudad.initEstrategiaSimple();
-		} else {
+		} else if (initMode == 2) {
 			ciudad.initEstrategiaElaborada();
+		} else {
+			ciudad.initEstrategiaMuyElaborada();
 		}
 
 		// Mostrar estado inicial
@@ -96,7 +98,7 @@ public class Principal {
 		}
 	}
 
-	private static void simulatedAnnealingSearch(Ciudad ciudad, int heur, int sAIterations2, int sAIterationsPerStep2, int sAK2, int sALambda2) {
+	private static void simulatedAnnealingSearch(Ciudad ciudad, int heur, int sAIterations2, int sAIterationsPerStep2, int sAK2, double sALambda2) {
 		try {
 
 			long start = System.currentTimeMillis();
@@ -117,7 +119,7 @@ public class Principal {
 			System.out.println();
 
 			// Estado final
-			System.out.println("[Goal state: " + search.getGoalState() + "]");
+			System.out.println(search.getGoalState());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -149,7 +151,7 @@ public class Principal {
 			FURGONETAS = Input.readInt();
 			System.out.print("Demanda equilibrada(1), hora punta(2): ");
 			DEMANDA = Input.readInt();
-			System.out.print("Estrategia simple(1), elaborada(2): ");
+			System.out.print("Estrategia simple(1), elaborada(2), muy elaborada(3): ");
 			initMode = Input.readInt();
 			System.out.print("SA(1), HC(2): ");
 			saHc = Input.readInt();
@@ -159,7 +161,7 @@ public class Principal {
 			if (saHc == 1) {
 				System.out.print("SA Iteraciones: ");
 				SAIterations = Input.readInt();
-				System.out.print("SA Iteraciones por paso: ");
+				System.out.print("SA Pasos por iteracion: ");
 				SAIterationsPerStep = Input.readInt();
 				System.out.print("SA k: ");
 				SAK = Input.readInt();
@@ -178,21 +180,23 @@ public class Principal {
 	private static void readFixedData() {
 		// Harcoded data
 
-		// SEED = 678652;
-		System.out.print("Seed: ");
-		SEED = Input.readInt();
+		// System.out.print("Seed: ");
+		// SEED = Input.readInt();
+
+		SEED = 10;
+
 		ESTACIONES = 25;
 		BICICLETAS = 1250;
 		FURGONETAS = 5;
+		// Demanda equilibrada(1), hora punta(2)
 		DEMANDA = 1;
-		System.out.print("Estrategia simple(1), elaborada(2): ");
-		initMode = Input.readInt();
 
-		// Estrategia simple(1), elaborada(2)
-		// initMode = 2;
+		// System.out.print("Estrategia simple(1), elaborada(2), muy elaborada(3): ");
+		// initMode = Input.readInt();
+		initMode = 1;
 
 		// SA(1), HC(2)
-		saHc = 2;
+		saHc = 1;
 
 		// Heur Max Distribucion(1), Max Beneficios(2): ");
 		// (1) Maximizacion de lo que obtenemos por los traslados de las bc
@@ -200,14 +204,19 @@ public class Principal {
 		heur = 1;
 
 		// Simulated anealing
-		SAIterations = 0;
-		SAIterationsPerStep = 0;
-		SAK = 0;
-		SALambda = 0;
+		if (saHc == 1) {
+			System.out.print("SA Iteraciones: ");
+			SAIterations = Input.readInt();
+			System.out.print("SA Pasos por iteracion: ");
+			SAIterationsPerStep = Input.readInt();
+			System.out.print("SA k: ");
+			SAK = Input.readInt();
+			System.out.print("SA lambda: ");
+			SALambda = Input.readDouble();
+		}
 
 		// Set random seed
 		random.setSeed(SEED);
 
 	}
-
 }
