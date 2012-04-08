@@ -149,7 +149,7 @@ public class Principal {
 			BICICLETAS = Input.readInt();
 			System.out.print("Furgonetas: ");
 			FURGONETAS = Input.readInt();
-			System.out.print("Demanda equilibrada(1), hora punta(2): ");
+			System.out.print("Demanda equilibrada(0), hora punta(1): ");
 			DEMANDA = Input.readInt();
 			System.out.print("Estrategia simple(1), elaborada(2), muy elaborada(3): ");
 			initMode = Input.readInt();
@@ -179,24 +179,23 @@ public class Principal {
 
 	private static void readFixedData() {
 		// Harcoded data
-
 		// System.out.print("Seed: ");
 		// SEED = Input.readInt();
-
-		SEED = 11;
+		SEED = 14;
 
 		ESTACIONES = 25;
 		BICICLETAS = 1250;
 		FURGONETAS = 5;
-		// Demanda equilibrada(1), hora punta(2)
-		DEMANDA = 1;
+
+		// Demanda equilibrada(0), hora punta(1)
+		DEMANDA = 0;
 
 		// System.out.print("Estrategia simple(1), elaborada(2), muy elaborada(3): ");
 		// initMode = Input.readInt();
 		initMode = 2;
 
 		// SA(1), HC(2)
-		saHc = 2;
+		saHc = 1;
 
 		// Heur Max Distribucion(1), Max Beneficios(2): ");
 		// (1) Maximizacion de lo que obtenemos por los traslados de las bc
@@ -205,14 +204,10 @@ public class Principal {
 
 		// Simulated anealing
 		if (saHc == 1) {
-			System.out.print("SA Iteraciones: ");
-			SAIterations = Input.readInt();
-			System.out.print("SA Pasos por iteracion: ");
-			SAIterationsPerStep = Input.readInt();
-			System.out.print("SA k: ");
-			SAK = Input.readInt();
-			System.out.print("SA lambda: ");
-			SALambda = Input.readDouble();
+			SAIterations = 5000;
+			SAIterationsPerStep = 20;
+			SAK = 1;
+			SALambda = 0.0001;
 		}
 
 		// Set random seed
