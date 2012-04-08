@@ -30,6 +30,7 @@ public class Ciudad {
 		for (int i = 0; i < estaciones.getNumStations(); i++) {
 			this.estacionesOcupadas.add(false);
 		}
+
 	}
 
 	// Copia
@@ -165,14 +166,6 @@ public class Ciudad {
 				}
 			});
 		}
-	}
-
-	private void ordenaPorDistancia(Vector<EstacionesDistancia> v) {
-		Collections.sort(v, new Comparator<Object>() {
-			public int compare(Object a, Object b) {
-				return (-(new Double(((EstacionesDistancia) a).getDistancia())).compareTo(new Double(((EstacionesDistancia) b).getDistancia())));
-			}
-		});
 	}
 
 	public void initEstrategiaElaborada() {
@@ -425,7 +418,10 @@ public class Ciudad {
 		if (this.transportes.size() > 0) {
 			for (int t = 0; t < this.transportes.size(); t++) {
 				dist = dist + Ciudad.estaciones.getStationsDistance(this.transportes.get(t).getOrigen(), this.transportes.get(t).getParadaUno());
-				dist = dist + Ciudad.estaciones.getStationsDistance(this.transportes.get(t).getParadaUno(), this.transportes.get(t).getParadaDos());
+				// Si hay paradaDos
+				if (this.transportes.get(t).getParadaDos() != -1) {
+					dist = dist + Ciudad.estaciones.getStationsDistance(this.transportes.get(t).getParadaUno(), this.transportes.get(t).getParadaDos());
+				}
 			}
 		}
 		return dist;
@@ -533,6 +529,8 @@ public class Ciudad {
 		result = result + gastos;
 		result = result + "\n Balance: ";
 		result = result + (double) Math.round((beneficios - gastos) * 100000) / 100000;
+		result = result + "\n Distancia recorrida: ";
+		result = result + (double) Math.round(getDistanciaTotalRecorrida() * 100000) / 100000 + "km";
 		result = result + "\n-----------------------\n";
 
 		return result;
