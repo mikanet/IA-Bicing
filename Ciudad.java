@@ -319,7 +319,7 @@ public class Ciudad {
 				gastos = gastos + (((transportes.get(i).getBcOrigen() / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getOrigen(), transportes.get(i).getParadaUno()));
 
 				// Gastos estacion uno estacion dos
-				if (transportes.get(i).getBcParadaDos() > 0)
+				if (transportes.get(i).getBcParadaDos() != -1)
 					gastos = gastos + ((((transportes.get(i).getBcOrigen() - transportes.get(i).getBcParadaUno()) / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getParadaUno(), transportes.get(i).getParadaDos()));
 			}
 		}
