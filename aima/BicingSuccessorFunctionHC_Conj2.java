@@ -13,6 +13,7 @@ public class BicingSuccessorFunctionHC_Conj2 implements SuccessorFunction {
 		Vector<Successor> result = new Vector<Successor>();
 		// Cast del objecto aState a ciudad
 		Ciudad estCiudad = (Ciudad) aState;
+		System.out.println("Add, Del");
 
 		// Conjunto addTransporte, delTransporte
 
@@ -25,7 +26,7 @@ public class BicingSuccessorFunctionHC_Conj2 implements SuccessorFunction {
 			// Por cada posible origen
 			for (int origen = 0; origen < Ciudad.estaciones.getNumStations(); origen++) {
 				// Si no furgoneta origen, doNotMove > = 1, nh - ns > 0
-				if (!estCiudad.hayFurgonetaEnEstacion(origen) && (Ciudad.estaciones.getStationDoNotMove(origen) > 0) && ((Ciudad.estaciones.getDemandNextHour(origen) - Ciudad.estaciones.getStationNextState(origen)) > 0)) {
+				if (!estCiudad.hayFurgonetaEnEstacion(origen) && (Ciudad.estaciones.getStationDoNotMove(origen) > 0)) {
 					// Por cada possible parada uno
 					for (int paradaUno = 0; paradaUno < Ciudad.estaciones.getNumStations(); paradaUno++) {
 						// Si parada uno != origen
@@ -37,13 +38,10 @@ public class BicingSuccessorFunctionHC_Conj2 implements SuccessorFunction {
 									// Por cada posible bicicleta en el
 									// origen
 									for (int bcOrigen = 1; bcOrigen < Ciudad.estaciones.getStationDoNotMove(origen); bcOrigen++) {
-
-										// Por cada bicicleta en la
-										// paradaUno
-										for (int bcParadaUno = 1; bcParadaUno <= bcOrigen; bcParadaUno++) {
-											// Limite de 30 bicicletas
-											if (bcParadaUno <= 30) {
-
+										if (bcOrigen <= 30) {
+											// Por cada bicicleta en la
+											// paradaUno
+											for (int bcParadaUno = 1; bcParadaUno <= bcOrigen; bcParadaUno++) {
 												if (paradaDos == -1) {
 													// No hay parada dos
 													Ciudad nuevaCiudad = new Ciudad(estCiudad);
@@ -72,7 +70,6 @@ public class BicingSuccessorFunctionHC_Conj2 implements SuccessorFunction {
 		// Aplicamos operador delTransporte
 		// -----------------------------------------------------------------------
 		for (int t = 0; t < estCiudad.transportes.size(); t++) {
-
 			Ciudad nuevaCiudad = new Ciudad(estCiudad);
 			nuevaCiudad.delTransporte(t);
 			result.add(new Successor("", nuevaCiudad));
