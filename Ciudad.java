@@ -167,14 +167,6 @@ public class Ciudad {
 		}
 	}
 
-	private void ordenaPorDistancia(Vector<EstacionesDistancia> v) {
-		Collections.sort(v, new Comparator<Object>() {
-			public int compare(Object a, Object b) {
-				return (-(new Double(((EstacionesDistancia) a).getDistancia())).compareTo(new Double(((EstacionesDistancia) b).getDistancia())));
-			}
-		});
-	}
-
 	public void initEstrategiaElaborada() {
 		// Estrategia elaborada para crear estado inicial
 		// Inicializamos f(o menos) transportes de forma que haya furgonetas
