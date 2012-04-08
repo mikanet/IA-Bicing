@@ -10,7 +10,6 @@ import bicing.Ciudad;
 public class BicingSuccessorFunctionHC_Conj1 implements SuccessorFunction {
 
 	public List<Successor> getSuccessors(Object aState) {
-		System.out.println("Add, Mod, Del");
 		Vector<Successor> result = new Vector<Successor>();
 		// Cast del objecto aState a ciudad
 		Ciudad estCiudad = (Ciudad) aState;
@@ -25,7 +24,7 @@ public class BicingSuccessorFunctionHC_Conj1 implements SuccessorFunction {
 		for (int t = 0; t < Ciudad.getNumFurgonetas() - estCiudad.transportes.size(); t++) {
 			// Por cada origen
 			for (int origen = 0; origen < Ciudad.estaciones.getNumStations(); origen++) {
-				// Si no furgoneta y dnm > 0 y nh - ns > 0
+				// Si no furgoneta y dnm > 0
 				if (!estCiudad.hayFurgonetaEnEstacion(origen) && (Ciudad.estaciones.getStationDoNotMove(origen) > 0)) {
 					// Por cada parada 1
 					for (int paradaUno = 0; paradaUno < Ciudad.estaciones.getNumStations(); paradaUno++) {

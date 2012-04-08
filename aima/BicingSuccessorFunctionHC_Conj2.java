@@ -13,7 +13,6 @@ public class BicingSuccessorFunctionHC_Conj2 implements SuccessorFunction {
 		Vector<Successor> result = new Vector<Successor>();
 		// Cast del objecto aState a ciudad
 		Ciudad estCiudad = (Ciudad) aState;
-		System.out.println("Add, Del");
 
 		// Conjunto addTransporte, delTransporte
 
@@ -25,7 +24,7 @@ public class BicingSuccessorFunctionHC_Conj2 implements SuccessorFunction {
 		for (int t = 0; t < Ciudad.getNumFurgonetas() - estCiudad.transportes.size(); t++) {
 			// Por cada posible origen
 			for (int origen = 0; origen < Ciudad.estaciones.getNumStations(); origen++) {
-				// Si no furgoneta origen, doNotMove > = 1, nh - ns > 0
+				// Si no furgoneta origen, doNotMove > = 1
 				if (!estCiudad.hayFurgonetaEnEstacion(origen) && (Ciudad.estaciones.getStationDoNotMove(origen) > 0)) {
 					// Por cada possible parada uno
 					for (int paradaUno = 0; paradaUno < Ciudad.estaciones.getNumStations(); paradaUno++) {
@@ -45,8 +44,9 @@ public class BicingSuccessorFunctionHC_Conj2 implements SuccessorFunction {
 												if (paradaDos == -1) {
 													// No hay parada dos
 													Ciudad nuevaCiudad = new Ciudad(estCiudad);
-													nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcParadaUno, -1, -1);
+													nuevaCiudad.addTransporte(origen, bcOrigen, paradaUno, bcOrigen, -1, -1);
 													result.add(new Successor("", nuevaCiudad));
+													bcParadaUno = bcOrigen + 1;
 												} else {
 													// Hay parada dos
 													Ciudad nuevaCiudad = new Ciudad(estCiudad);

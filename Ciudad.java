@@ -319,7 +319,7 @@ public class Ciudad {
 				gastos = gastos + (((transportes.get(i).getBcOrigen() / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getOrigen(), transportes.get(i).getParadaUno()));
 
 				// Gastos estacion uno estacion dos
-				if (transportes.get(i).getBcParadaDos() > 0)
+				if (transportes.get(i).getBcParadaDos() != -1)
 					gastos = gastos + ((((transportes.get(i).getBcOrigen() - transportes.get(i).getBcParadaUno()) / 10) + 1) * estaciones.getStationsDistance(transportes.get(i).getParadaUno(), transportes.get(i).getParadaDos()));
 			}
 		}
@@ -340,19 +340,6 @@ public class Ciudad {
 
 	public static Integer getNumFurgonetas() {
 		return numFurgonetas;
-	}
-
-	public int getTransporteConEstacion(int st) {
-		// Devuelve el identificador del transporte (indice en el vector
-		// transportes) del transporte con furgoneta en la estacion origen st
-
-		for (int i = 0; i < this.transportes.size(); i++) {
-			if (this.transportes.get(i).getOrigen() == st) {
-				return i;
-			}
-		}
-		return -1;
-
 	}
 
 	public Boolean hayFurgonetaEnEstacion(int st) {
@@ -376,8 +363,8 @@ public class Ciudad {
 		this.estacionesOcupadas.set(origen, true);
 	}
 
-	public void modTransporte(int origen, int nuevoOrigen, int bcOrigen, int paradaUno, int bcParadaUno, int paradaDos, int bcParadaDos) {
-		Transporte transAux = this.transportes.get(origen);
+	public void modTransporte(int idTransporte, int nuevoOrigen, int bcOrigen, int paradaUno, int bcParadaUno, int paradaDos, int bcParadaDos) {
+		Transporte transAux = this.transportes.get(idTransporte);
 		transAux.setOrigen(nuevoOrigen);
 		transAux.setBcOrigen(bcOrigen);
 		transAux.setParadaUno(paradaUno);
@@ -386,8 +373,8 @@ public class Ciudad {
 		transAux.setBcParadaDos(bcParadaDos);
 
 		// Marcamos la nueva estacion como ocupada
-		if (origen != nuevoOrigen) {
-			this.estacionesOcupadas.set(origen, false);
+		if (idTransporte != nuevoOrigen) {
+			this.estacionesOcupadas.set(idTransporte, false);
 			this.estacionesOcupadas.set(nuevoOrigen, true);
 		}
 	}
