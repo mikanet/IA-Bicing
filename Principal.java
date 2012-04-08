@@ -183,7 +183,7 @@ public class Principal {
 		// System.out.print("Seed: ");
 		// SEED = Input.readInt();
 
-		SEED = 10;
+		SEED = 11;
 
 		ESTACIONES = 25;
 		BICICLETAS = 1250;
@@ -193,10 +193,10 @@ public class Principal {
 
 		// System.out.print("Estrategia simple(1), elaborada(2), muy elaborada(3): ");
 		// initMode = Input.readInt();
-		initMode = 1;
+		initMode = 2;
 
 		// SA(1), HC(2)
-		saHc = 1;
+		saHc = 2;
 
 		// Heur Max Distribucion(1), Max Beneficios(2): ");
 		// (1) Maximizacion de lo que obtenemos por los traslados de las bc
