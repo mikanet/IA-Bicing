@@ -376,20 +376,12 @@ public class Ciudad {
 		this.estacionesOcupadas.set(origen, true);
 	}
 
-	public void modTransporte(int origen, int nuevoOrigen, int bcOrigen, int paradaUno, int bcParadaUno, int paradaDos, int bcParadaDos) {
-		Transporte transAux = this.transportes.get(origen);
-		transAux.setOrigen(nuevoOrigen);
+	public void modTransporte(int idTransporte, int bcOrigen, int bcParadaUno, int bcParadaDos) {
+		Transporte transAux = this.transportes.get(idTransporte);
 		transAux.setBcOrigen(bcOrigen);
-		transAux.setParadaUno(paradaUno);
 		transAux.setBcParadaUno(bcParadaUno);
-		transAux.setParadaDos(paradaDos);
 		transAux.setBcParadaDos(bcParadaDos);
 
-		// Marcamos la nueva estacion como ocupada
-		if (origen != nuevoOrigen) {
-			this.estacionesOcupadas.set(origen, false);
-			this.estacionesOcupadas.set(nuevoOrigen, true);
-		}
 	}
 
 	public void delTransporte(int index) {

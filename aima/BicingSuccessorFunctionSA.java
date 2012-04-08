@@ -87,7 +87,6 @@ public class BicingSuccessorFunctionSA implements SuccessorFunction {
 				// Elejimos el transporte
 				t = Principal.random.nextInt(estCiudad.transportes.size());
 				int origen = estCiudad.transportes.get(t).getOrigen();
-				int paradaUno = estCiudad.transportes.get(t).getParadaUno();
 				int paradaDos = estCiudad.transportes.get(t).getParadaDos();
 
 				// Elejimos bc origen
@@ -105,11 +104,11 @@ public class BicingSuccessorFunctionSA implements SuccessorFunction {
 				// Hay paradaDos
 				if (paradaDos != -1) {
 					Ciudad nuevaCiudad = new Ciudad(estCiudad);
-					nuevaCiudad.modTransporte(t, origen, bcOrigen, paradaUno, bcParadaUno, paradaDos, bcParadaDos);
+					nuevaCiudad.modTransporte(t, bcOrigen, bcParadaUno, bcParadaDos);
 					result.add(new Successor("", nuevaCiudad));
 				} else {
 					Ciudad nuevaCiudad = new Ciudad(estCiudad);
-					nuevaCiudad.modTransporte(t, origen, bcOrigen, paradaUno, bcOrigen, -1, -1);
+					nuevaCiudad.modTransporte(t, bcOrigen, bcOrigen, -1);
 					result.add(new Successor("", nuevaCiudad));
 				}
 
