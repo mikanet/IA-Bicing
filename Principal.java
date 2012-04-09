@@ -35,11 +35,11 @@ public class Principal {
 	public static final Random random = new Random();
 
 	public static void main(String[] args) {
-		System.out.println("[ IA-2012, Bicing - Locura es hacer la misma cosa una y otra vez esperando obtener diferentes resultados (Albert Einstein)]");
+		// System.out.println("[ IA-2012, Bicing - Locura es hacer la misma cosa una y otra vez esperando obtener diferentes resultados (Albert Einstein)]");
+		System.out.println("[ IA-2012, Bicing - Martin Ayora, Veronica Mi–arro]");
 
 		// Read data
-		readFixedData();
-		// readDataFromUser();
+		readDataFromUser();
 
 		// State initialization
 		Ciudad ciudad = new Ciudad(ESTACIONES, BICICLETAS, FURGONETAS, DEMANDA, SEED, random);
@@ -54,7 +54,7 @@ public class Principal {
 		}
 
 		// Mostrar estado inicial
-		System.out.println();
+		System.out.println("\n[Estado inicial]");
 		System.out.println(ciudad);
 
 		System.out.println("[ AIMA search ]");
@@ -91,6 +91,7 @@ public class Principal {
 			System.out.println();
 
 			// Estado final
+			System.out.println("[Estado final]");
 			System.out.println(search.getGoalState());
 
 		} catch (Exception e) {
@@ -119,6 +120,7 @@ public class Principal {
 			System.out.println();
 
 			// Estado final
+			System.out.println("[Estado final]");
 			System.out.println(search.getGoalState());
 
 		} catch (Exception e) {
@@ -127,12 +129,11 @@ public class Principal {
 	}
 
 	private static void printInstrumentation(Properties properties) {
-		System.out.println("[ Instrumentation ]");
 		Iterator<Object> keys = properties.keySet().iterator();
 		while (keys.hasNext()) {
 			String key = (String) keys.next();
 			String property = properties.getProperty(key);
-			System.out.println(key + " : " + property);
+			System.out.println("[ " + key + " : " + property + " ]");
 		}
 	}
 
@@ -155,7 +156,10 @@ public class Principal {
 			initMode = Input.readInt();
 			System.out.print("SA(1), HC(2): ");
 			saHc = Input.readInt();
-			System.out.print("Heur Max Distribucion(1), Max Beneficios(2): ");
+			System.out.println("Heur Max Distribucion(1), Max Beneficios(2): ");
+			System.out.println("(1) Maximizacion de lo que obtenemos por los traslados de las bicicletas");
+			System.out.println("(2): (1) + Minimizacion de los costes de transporte de las bicicletas");
+			System.out.print("heur: ");
 			heur = Input.readInt();
 
 			if (saHc == 1) {
@@ -166,7 +170,7 @@ public class Principal {
 				System.out.print("SA k: ");
 				SAK = Input.readInt();
 				System.out.print("SA lambda: ");
-				SALambda = Input.readInt();
+				SALambda = Input.readDouble();
 			}
 
 		} catch (Exception e) {
@@ -177,6 +181,7 @@ public class Principal {
 		random.setSeed(SEED);
 	}
 
+	@SuppressWarnings("unused")
 	private static void readFixedData() {
 		// Harcoded data
 		System.out.print("Seed: ");
