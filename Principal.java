@@ -36,7 +36,8 @@ public class Principal {
 
 	public static void main(String[] args) {
 		// System.out.println("[ IA-2012, Bicing - Locura es hacer la misma cosa una y otra vez esperando obtener diferentes resultados (Albert Einstein)]");
-		System.out.println("[ IA-2012, Bicing - Martin Ayora, Veronica Mi–arro]");
+		System.out.println("[ IA-2012, Bicing - Martin Ayora, Veronica Minarro]");
+		System.out.println("[Introduzca los parametros requeridos a continuacion y puse enter ]");
 
 		// Read data
 		readDataFromUser();
